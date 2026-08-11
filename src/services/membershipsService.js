@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   serverTimestamp,
   setDoc,
@@ -95,4 +96,33 @@ export async function getUserMemberships(
       ...membershipDoc.data(),
     }),
   )
+}
+
+export async function getMembership(userId, roomCode) {
+  if (!userId) {
+    throw new Error('User ID is required.')
+  }
+
+  if (!roomCode) {
+    throw new Error('Room code is required.')
+  }
+
+  const membershipRef = getMembershipRef(
+    userId,
+    roomCode,
+  )
+
+  const membershipSnapshot = await getDoc(
+    membershipRef,
+  )
+
+  if (!membershipSnapshot.exists()) {
+    return null
+  }
+
+  return {
+    userId,
+    roomCode,
+    ...membershipSnapshot.data(),
+  }
 }

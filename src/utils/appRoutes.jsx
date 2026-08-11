@@ -6,8 +6,7 @@ import LoginPage from '@/pages/LoginPage'
 import LobbyPage from '@/pages/LobbyPage'
 import CreateRoomPage from '@/pages/CreateRoomPage'
 
-import RoomPage from '@/pages/RoomPage'
-import MasterRoomPage from '@/pages/MasterRoomPage'
+import RoomPage from '@/pages/RoomPage/RoomPage'
 
 import CharactersPage from '@/pages/CharactersPage'
 import AbilitiesPage from '@/pages/AbilitiesPage'
@@ -64,12 +63,6 @@ export const appRoutes = [
       {
         path: 'room/:roomId',
         element: <RoomPage />,
-      },
-
-
-      {
-        path: 'room/:roomId/master',
-        element: <MasterRoomPage />,
       },
 
 

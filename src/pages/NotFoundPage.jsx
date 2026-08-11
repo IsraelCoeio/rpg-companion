@@ -12,7 +12,7 @@ function NotFoundPage() {
         description="This route does not exist in the current navigation map."
       >
         <Button asChild>
-          <Link to="/home">Return to Home</Link>
+          <Link to="/">Return to Home</Link>
         </Button>
       </ScreenPlaceholder>
     </PageContainer>

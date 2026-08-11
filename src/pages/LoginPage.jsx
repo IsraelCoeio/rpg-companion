@@ -43,7 +43,8 @@ function LoginPage() {
         memberships,
       )
 
-    navigate(destination, {
+    navigate(destination.path, {
+      state: { membership: destination.membership },
       replace: true,
     })
 

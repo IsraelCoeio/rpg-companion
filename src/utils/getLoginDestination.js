@@ -1,24 +1,14 @@
 export function getLoginDestination(
   memberships,
 ) {
-  const masterMembership =
-    memberships.find(
-      (membership) =>
-        membership.role === 'master',
-    )
 
-  if (masterMembership) {
-    return `/room/${masterMembership.roomCode}/master`
-  }
+  const userMembership = memberships[0]
 
-  const playerMembership =
-    memberships.find(
-      (membership) =>
-        membership.role === 'player',
-    )
-
-  if (playerMembership) {
-    return `/room/${playerMembership.roomCode}`
+  if (userMembership) {
+    return {
+      path: `/room/${userMembership.roomCode}`,
+      membership: userMembership,
+    }
   }
 
   return '/'
