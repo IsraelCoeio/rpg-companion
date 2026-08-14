@@ -9,6 +9,7 @@ import { joinRoom } from '@/services/roomsService'
 
 import PageContainer from '@/components/layout/PageContainer'
 import { Button } from '@/components/ui/button'
+import { getUserMemberships } from '@/services/membershipsService'
 
 function LobbyPage() {
   const setRoom = useGameStore((state) => state.setRoom)
@@ -36,20 +37,49 @@ function LobbyPage() {
 
     let isMounted = true
 
-    async function loadUserProfile() {
+    async function loadLobbyData() {
       try {
         setProfileLoading(true)
 
-        const profile = await getUserProfile(user.uid)
+        const [
+          profile,
+          memberships,
+        ] = await Promise.all([
+          getUserProfile(user.uid),
+          getUserMemberships(user.uid),
+        ])
 
-        if (isMounted) {
-          setUserProfile(profile)
+        if (!isMounted) {
+          return
+        }
+
+        setUserProfile(profile)
+
+        const membership = memberships[0]
+
+        if (membership) {
+          navigate(
+            `/room/${membership.roomCode}`,
+            {
+              replace: true,
+              state: {
+                membership,
+              },
+            },
+          )
+
+          return
         }
       } catch (error) {
-        console.error('Failed to load user profile:', error)
+        console.error(
+          'Failed to load lobby data:',
+          error,
+        )
 
         if (isMounted) {
-          setErrorMessage('Failed to load your profile.')
+          setErrorMessage(
+            'Failed to load your profile.',
+          )
         }
       } finally {
         if (isMounted) {
@@ -58,7 +88,7 @@ function LobbyPage() {
       }
     }
 
-    loadUserProfile()
+    loadLobbyData()
 
     return () => {
       isMounted = false
