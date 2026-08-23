@@ -16,7 +16,7 @@ function LobbyPage() {
 
   const navigate = useNavigate()
 
-  const { user, loading: authLoading } = useAuth()
+  const { user} = useAuth()
 
   const [userProfile, setUserProfile] = useState(null)
   const [profileLoading, setProfileLoading] = useState(true)
@@ -26,14 +26,6 @@ function LobbyPage() {
   const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
-    if (authLoading) {
-      return
-    }
-
-    if (!user) {
-      navigate('/login', { replace: true })
-      return
-    }
 
     let isMounted = true
 
@@ -93,7 +85,7 @@ function LobbyPage() {
     return () => {
       isMounted = false
     }
-  }, [user, authLoading, navigate])
+  }, [user, navigate])
 
   async function handleJoinRoom(event) {
     event.preventDefault()
@@ -104,11 +96,6 @@ function LobbyPage() {
 
     if (!normalizedRoomCode) {
       setErrorMessage('Room code is required.')
-      return
-    }
-
-    if (!user) {
-      setErrorMessage('You must be logged in to join a room.')
       return
     }
 
@@ -140,7 +127,7 @@ function LobbyPage() {
     }
   }
 
-  if (authLoading || profileLoading) {
+  if ( profileLoading) {
     return (
       <PageContainer>
         <div className="flex min-h-[60vh] items-center justify-center">

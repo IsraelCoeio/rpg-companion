@@ -1,5 +1,5 @@
 import AppShell from '@/components/layout/AppShell'
-
+import RequireAuth from '@/components/routing/RequireAuth'
 import RegisterPage from '@/pages/RegisterPage'
 import LoginPage from '@/pages/LoginPage'
 
@@ -29,8 +29,13 @@ export const appRoutes = [
     element: <LoginPage />,
   },
   {
-    path: '/Lobby',
-    element: <LobbyPage />,
+    element: <RequireAuth />,
+    children: [
+      {
+        path: '/Lobby',
+        element: <LobbyPage />,
+      },
+    ]
   },
 
 
