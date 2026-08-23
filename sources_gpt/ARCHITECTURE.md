@@ -34,6 +34,27 @@ Current important routes:
  /profile
  *
 
+Route protection is centralized through nested Route Guards:
+
+RequireAuth
+    |
+    +-- /Lobby
+    +-- /create-room
+    |
+    +-- AppShell
+          |
+          +-- RequireJoinContext → /characters
+          +-- RequireMembership → /room/:roomCode
+
+Route Guards are responsible for navigation and UX:
+
+- Authentication
+- Membership
+- Redirects
+- Preventing unnecessary rendering
+
+Protected pages assume their required guards have already passed.
+
 The root route is intended to become a smart entry point:
 
 Unauthenticated:
@@ -57,7 +78,7 @@ There is intentionally no:
 
     /room/:roomCode/master
 
-RoomPage determines which interface to render using the user's membership.
+RoomPage receives verified membership from the routing layer and determines which interface to render.
 
 Conceptually:
 
@@ -66,8 +87,7 @@ Conceptually:
        RoomPage
           |
     membership.role
-       /       \
-    master    player
+       /           master    player
       |          |
  Master UI    Player UI
 
@@ -75,12 +95,7 @@ Do not create separate Master/Player routes unless there is a strong architectur
 
 ## Authorization
 
-Route Guards are responsible for navigation and UX:
-
-- Authentication
-- Membership
-- Redirects
-- Preventing unnecessary rendering
+Route Guards are responsible for navigation and UX.
 
 Firestore Security Rules are responsible for actual authorization.
 
