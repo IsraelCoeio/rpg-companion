@@ -19,7 +19,7 @@ function RootRedirect() {
     useState(null)
 
   const [loading, setLoading] =
-    useState(true)
+    useState(false)
 
   const [errorMessage, setErrorMessage] =
     useState('')
@@ -27,11 +27,6 @@ function RootRedirect() {
 
   useEffect(() => {
     if (authLoading) {
-      return
-    }
-
-    if (!user) {
-      setLoading(false)
       return
     }
 
