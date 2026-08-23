@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { addMembership } from '@/services/membershipsService'
 import { useAuth } from '@/hooks/useAuth'
 
 import useGameStore from '@/store/useGameStore'
@@ -11,9 +10,13 @@ import { Button } from '@/components/ui/button'
 
 import { getCharacters } from '@/services/charactersService'
 import { addPlayer } from '@/services/playersService'
+import { useUser } from '@/hooks/useUser'
 
 
 function CharactersPage() {
+  const {
+    addUserMembership,
+  } = useUser()
   const navigate = useNavigate()
 
   const { user} =
@@ -132,11 +135,10 @@ function CharactersPage() {
         },
       )
 
-      await addMembership(
-        user.uid,
+      await addUserMembership({
         roomCode,
-        'player',
-      )
+        role: 'player',
+      })
 
       /*
        * Now the player officially belongs

@@ -1,8 +1,7 @@
 import { useAuth } from '@/hooks/useAuth'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { addMembership } from '@/services/membershipsService'
-
+import { useUser } from '@/hooks/useUser'
 import useGameStore from '@/store/useGameStore'
 
 import PageContainer from '@/components/layout/PageContainer'
@@ -17,6 +16,10 @@ import {
 
 function CreateRoomPage() {
   const { user } = useAuth()
+
+  const {
+    addUserMembership,
+  } = useUser()
 
   const setRoom = useGameStore(
     (state) => state.setRoom,
@@ -68,11 +71,10 @@ function CreateRoomPage() {
         masterId: user.uid,
       })
       
-      await addMembership(
-        user.uid,
-        createdRoom.roomCode,
-        'master',
-      )
+      await addUserMembership({
+        roomCode: createdRoom.roomCode,
+        role: 'master',
+      })
 
       setRoom({
         roomCode: createdRoom.roomCode,
@@ -80,7 +82,7 @@ function CreateRoomPage() {
         isMaster: true,
       })
 
-      navigate(`/room/${roomCode}`)
+      navigate(`/room/${createdRoom.roomCode}`)
     } catch (error) {
       console.error(error)
       setErrorMessage(
