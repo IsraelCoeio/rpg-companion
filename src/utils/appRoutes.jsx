@@ -19,6 +19,8 @@ import ProfilePage from '@/pages/ProfilePage'
 
 import NotFoundPage from '@/pages/NotFoundPage'
 
+import RequireMembership from '@/components/routing/RequireMembership'
+
 
 
 export const appRoutes = [
@@ -54,7 +56,38 @@ export const appRoutes = [
             ]
           },
         ]
-      }
+      },
+      {
+        element: <RequireMembership />,
+        children: [
+          {
+            path: 'room/:roomId',
+            element: <RoomPage />,
+          },
+
+          {
+            path: 'abilities',
+            element: <AbilitiesPage />,
+          },
+
+
+          {
+            path: 'inventory',
+            element: <InventoryPage />,
+          },
+        ]
+      },
+
+      {
+        path: 'gallery',
+        element: <GalleryPage />,
+      },
+
+
+      {
+        path: 'profile',
+        element: <ProfilePage />,
+      },
     ]
   },
 
@@ -68,54 +101,6 @@ export const appRoutes = [
   {
     path: '/login',
     element: <LoginPage />,
-  },
-
-
-  // Navbar visible
-
-  {
-    path: '/',
-    element: <AppShell />,
-
-    children: [
-
-      {
-        path: 'room/:roomId',
-        element: <RoomPage />,
-      },
-
-
-      {
-        path: 'characters',
-        element: <CharactersPage />,
-      },
-
-
-      {
-        path: 'abilities',
-        element: <AbilitiesPage />,
-      },
-
-
-      {
-        path: 'inventory',
-        element: <InventoryPage />,
-      },
-
-
-      {
-        path: 'gallery',
-        element: <GalleryPage />,
-      },
-
-
-      {
-        path: 'profile',
-        element: <ProfilePage />,
-      },
-
-
-    ],
   },
 
 
