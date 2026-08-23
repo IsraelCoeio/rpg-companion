@@ -16,7 +16,7 @@ import { addPlayer } from '@/services/playersService'
 function CharactersPage() {
   const navigate = useNavigate()
 
-  const { user, loading: authLoading } =
+  const { user} =
     useAuth()
 
   const roomCode = useGameStore(
@@ -88,20 +88,6 @@ function CharactersPage() {
       return
     }
 
-    if (authLoading) {
-      setErrorMessage(
-        'Authentication is still loading.',
-      )
-      return
-    }
-
-    if (!user) {
-      setErrorMessage(
-        'You must be logged in to join a room.',
-      )
-      return
-    }
-
     if (!roomCode) {
       setErrorMessage(
         'No room was selected.',
@@ -146,7 +132,7 @@ function CharactersPage() {
         },
       )
 
-      const membership =await addMembership(
+      await addMembership(
         user.uid,
         roomCode,
         'player',
@@ -156,7 +142,7 @@ function CharactersPage() {
        * Now the player officially belongs
        * to the room.
        */
-      navigate(`/room/${roomCode}`,{state:{membership: membership}})
+      navigate(`/room/${roomCode}`)
     } catch (error) {
       console.error(
         'Failed to join room:',
@@ -236,8 +222,7 @@ function CharactersPage() {
           <Button
             disabled={
               !selectedCharacter ||
-              isLoading ||
-              authLoading
+              isLoading
             }
             onClick={handleReady}
             className="w-full"

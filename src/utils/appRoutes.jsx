@@ -1,7 +1,8 @@
 import AppShell from '@/components/layout/AppShell'
-
+import RequireAuth from '@/components/routing/RequireAuth'
 import RegisterPage from '@/pages/RegisterPage'
 import LoginPage from '@/pages/LoginPage'
+import RequireJoinContext from '@/components/routing/RequireJoinContext'
 
 import LobbyPage from '@/pages/LobbyPage'
 import CreateRoomPage from '@/pages/CreateRoomPage'
@@ -18,6 +19,8 @@ import ProfilePage from '@/pages/ProfilePage'
 
 import NotFoundPage from '@/pages/NotFoundPage'
 
+import RequireMembership from '@/components/routing/RequireMembership'
+
 
 
 export const appRoutes = [
@@ -29,14 +32,63 @@ export const appRoutes = [
     element: <LoginPage />,
   },
   {
-    path: '/Lobby',
-    element: <LobbyPage />,
-  },
+    element: <RequireAuth />,
+    children: [
+      {
+        path: '/Lobby',
+        element: <LobbyPage />,
+      },
+      {
+        path: '/create-room',
+        element: <CreateRoomPage />,
+      },
+      {
+        path: '/',
+        element: <AppShell />,
+
+        children: [
+
+          { element: <RequireJoinContext />, 
+              children: [{
+                path: 'characters',
+                element: <CharactersPage />,
+              }
+            ]
+          },
+        ]
+      },
+      {
+        element: <RequireMembership />,
+        children: [
+          {
+            path: 'room/:roomId',
+            element: <RoomPage />,
+          },
+
+          {
+            path: 'abilities',
+            element: <AbilitiesPage />,
+          },
 
 
-  {
-    path: '/create-room',
-    element: <CreateRoomPage />,
+          {
+            path: 'inventory',
+            element: <InventoryPage />,
+          },
+        ]
+      },
+
+      {
+        path: 'gallery',
+        element: <GalleryPage />,
+      },
+
+
+      {
+        path: 'profile',
+        element: <ProfilePage />,
+      },
+    ]
   },
 
 
@@ -49,54 +101,6 @@ export const appRoutes = [
   {
     path: '/login',
     element: <LoginPage />,
-  },
-
-
-  // Navbar visible
-
-  {
-    path: '/',
-    element: <AppShell />,
-
-    children: [
-
-      {
-        path: 'room/:roomId',
-        element: <RoomPage />,
-      },
-
-
-      {
-        path: 'characters',
-        element: <CharactersPage />,
-      },
-
-
-      {
-        path: 'abilities',
-        element: <AbilitiesPage />,
-      },
-
-
-      {
-        path: 'inventory',
-        element: <InventoryPage />,
-      },
-
-
-      {
-        path: 'gallery',
-        element: <GalleryPage />,
-      },
-
-
-      {
-        path: 'profile',
-        element: <ProfilePage />,
-      },
-
-
-    ],
   },
 
 
