@@ -132,7 +132,7 @@ function CharactersPage() {
         },
       )
 
-      const membership =await addMembership(
+      await addMembership(
         user.uid,
         roomCode,
         'player',
@@ -142,7 +142,7 @@ function CharactersPage() {
        * Now the player officially belongs
        * to the room.
        */
-      navigate(`/room/${roomCode}`,{state:{membership: membership}})
+      navigate(`/room/${roomCode}`)
     } catch (error) {
       console.error(
         'Failed to join room:',

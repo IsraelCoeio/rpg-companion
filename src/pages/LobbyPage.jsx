@@ -53,10 +53,7 @@ function LobbyPage() {
           navigate(
             `/room/${membership.roomCode}`,
             {
-              replace: true,
-              state: {
-                membership,
-              },
+              replace: true
             },
           )
 

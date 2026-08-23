@@ -4,8 +4,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import PageContainer from '@/components/layout/PageContainer'
 import { Button } from '@/components/ui/button'
 import { loginUser } from '@/services/authService'
-import { getUserMemberships } from '@/services/membershipsService'
-import { getLoginDestination } from '@/utils/getLoginDestination'
 
 function LoginPage() {
   const navigate = useNavigate()
@@ -34,17 +32,12 @@ function LoginPage() {
     setErrorMessage('')
 
     try {
-      const user = await loginUser({
+      await loginUser({
   username: normalizedUsername,
   password,
 })
-    const memberships =  await getUserMemberships(user.uid)
-    const destination = getLoginDestination(
-        memberships,
-      )
 
-    navigate(destination.path, {
-      state: { membership: destination.membership },
+    navigate('/lobby', {
       replace: true,
     })
 

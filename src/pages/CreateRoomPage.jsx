@@ -68,7 +68,7 @@ function CreateRoomPage() {
         masterId: user.uid,
       })
       
-      const membership = await addMembership(
+      await addMembership(
         user.uid,
         createdRoom.roomCode,
         'master',
@@ -80,7 +80,7 @@ function CreateRoomPage() {
         isMaster: true,
       })
 
-      navigate(`/room/${roomCode}`,{state:{membership: membership}})
+      navigate(`/room/${roomCode}`)
     } catch (error) {
       console.error(error)
       setErrorMessage(
