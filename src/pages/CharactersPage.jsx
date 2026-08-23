@@ -16,7 +16,7 @@ import { addPlayer } from '@/services/playersService'
 function CharactersPage() {
   const navigate = useNavigate()
 
-  const { user, loading: authLoading } =
+  const { user} =
     useAuth()
 
   const roomCode = useGameStore(
@@ -85,20 +85,6 @@ function CharactersPage() {
 
   async function handleReady() {
     if (!selectedCharacter) {
-      return
-    }
-
-    if (authLoading) {
-      setErrorMessage(
-        'Authentication is still loading.',
-      )
-      return
-    }
-
-    if (!user) {
-      setErrorMessage(
-        'You must be logged in to join a room.',
-      )
       return
     }
 
@@ -236,8 +222,7 @@ function CharactersPage() {
           <Button
             disabled={
               !selectedCharacter ||
-              isLoading ||
-              authLoading
+              isLoading
             }
             onClick={handleReady}
             className="w-full"

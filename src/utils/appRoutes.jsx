@@ -2,6 +2,7 @@ import AppShell from '@/components/layout/AppShell'
 import RequireAuth from '@/components/routing/RequireAuth'
 import RegisterPage from '@/pages/RegisterPage'
 import LoginPage from '@/pages/LoginPage'
+import RequireJoinContext from '@/components/routing/RequireJoinContext'
 
 import LobbyPage from '@/pages/LobbyPage'
 import CreateRoomPage from '@/pages/CreateRoomPage'
@@ -35,13 +36,26 @@ export const appRoutes = [
         path: '/Lobby',
         element: <LobbyPage />,
       },
+      {
+        path: '/create-room',
+        element: <CreateRoomPage />,
+      },
+      {
+        path: '/',
+        element: <AppShell />,
+
+        children: [
+
+          { element: <RequireJoinContext />, 
+              children: [{
+                path: 'characters',
+                element: <CharactersPage />,
+              }
+            ]
+          },
+        ]
+      }
     ]
-  },
-
-
-  {
-    path: '/create-room',
-    element: <CreateRoomPage />,
   },
 
 
