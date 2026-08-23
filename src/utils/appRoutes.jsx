@@ -3,6 +3,7 @@ import RequireAuth from '@/components/routing/RequireAuth'
 import RegisterPage from '@/pages/RegisterPage'
 import LoginPage from '@/pages/LoginPage'
 import RequireJoinContext from '@/components/routing/RequireJoinContext'
+import RootRedirect from '@/components/routing/RouteRedirect'
 
 import LobbyPage from '@/pages/LobbyPage'
 import CreateRoomPage from '@/pages/CreateRoomPage'
@@ -29,7 +30,7 @@ export const appRoutes = [
 
   {
     path: '/',
-    element: <LoginPage />,
+    element: <RootRedirect />,
   },
   {
     element: <RequireAuth />,
