@@ -56,7 +56,7 @@ function RegisterPage() {
 
       console.log('Registered user:', user.uid)
 
-      navigate('/lobby', { replace: true })
+      navigate('/', { replace: true })
     } catch (error) {
       console.error(error)
 

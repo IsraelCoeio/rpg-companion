@@ -35,7 +35,13 @@ function RequireAuth() {
   }
 
 
-  return <Outlet />
+  return (
+    <Outlet 
+      context={{
+        user,
+      }}
+    />
+  )
 }
 
 

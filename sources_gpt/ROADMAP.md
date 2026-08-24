@@ -6,7 +6,7 @@
 - [x] Centralize authentication and membership checks with Route Guards.
 - [ ] Enforce authorization through Firestore Rules.
 - [x] Restrict UI/pages according to authentication and room membership.
-- [ ] Make `/` intelligently redirect authenticated users to their room.
+- [x] Make `/` intelligently redirect authenticated users to their room.
 - [ ] Finish logged-in UI state.
 
 ### Room / gameplay

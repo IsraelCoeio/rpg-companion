@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { addMembership } from '@/services/membershipsService'
-import { useAuth } from '@/hooks/useAuth'
 
 import useGameStore from '@/store/useGameStore'
 
@@ -11,13 +9,15 @@ import { Button } from '@/components/ui/button'
 
 import { getCharacters } from '@/services/charactersService'
 import { addPlayer } from '@/services/playersService'
+import { useUser } from '@/hooks/useUser'
 
 
 function CharactersPage() {
+  const {
+    user,
+    addUserMembership,
+  } = useUser()
   const navigate = useNavigate()
-
-  const { user} =
-    useAuth()
 
   const roomCode = useGameStore(
     (state) => state.roomCode,
@@ -43,6 +43,9 @@ function CharactersPage() {
   const [isLoading, setIsLoading] =
     useState(false)
 
+  const [isLoadingCharacters, setIsLoadingCharacters] =
+    useState(true)
+
 
   useEffect(() => {
     let isMounted = true
@@ -61,6 +64,11 @@ function CharactersPage() {
           error.message ||
           'Failed to load characters.',
         )
+      })
+      .finally(() => {
+        if (!isMounted) return
+
+        setIsLoadingCharacters(false)
       })
 
     return () => {
@@ -132,11 +140,10 @@ function CharactersPage() {
         },
       )
 
-      await addMembership(
-        user.uid,
+      await addUserMembership({
         roomCode,
-        'player',
-      )
+        role: 'player',
+      })
 
       /*
        * Now the player officially belongs
@@ -173,56 +180,64 @@ function CharactersPage() {
           </p>
         )}
 
-        <div className="grid gap-4">
-          {characters.map((character) => {
-            const selected =
-              selectedCharacter?.id ===
-              character.id
+        {isLoadingCharacters ? (
+          <div className="flex min-h-32 items-center justify-center">
+            <p className="text-muted-foreground">
+              Loading characters...
+            </p>
+          </div>
+        ) : (
+          <div className="grid gap-4">
+            {characters.map((character) => {
+              const selected =
+                selectedCharacter?.id === character.id
 
-            return (
-              <button
-                key={character.id}
-                type="button"
-                onClick={() =>
-                  toggleCharacter(character)
-                }
-                disabled={isLoading}
-                className={`
-                  rounded-2xl border p-4
-                  text-left transition
-                  ${
-                    selected
-                      ? 'border-primary ring-2 ring-primary'
-                      : 'border-border hover:border-primary/50'
+              return (
+                <button
+                  key={character.id}
+                  type="button"
+                  onClick={() =>
+                    toggleCharacter(character)
                   }
-                  ${
-                    isLoading
-                      ? 'cursor-not-allowed opacity-60'
-                      : ''
-                  }
-                `}
-              >
-                <h3 className="font-display text-xl">
-                  {character.name}
-                </h3>
+                  disabled={isLoading}
+                  className={`
+                    rounded-2xl border p-4
+                    text-left transition
+                    ${
+                      selected
+                        ? 'border-primary ring-2 ring-primary'
+                        : 'border-border hover:border-primary/50'
+                    }
+                    ${
+                      isLoading
+                        ? 'cursor-not-allowed opacity-60'
+                        : ''
+                    }
+                  `}
+                >
+                  <h3 className="font-display text-xl">
+                    {character.name}
+                  </h3>
 
-                <p className="text-muted-foreground">
-                  {character.title}
-                </p>
+                  <p className="text-muted-foreground">
+                    {character.title}
+                  </p>
 
-                <p className="mt-2">
-                  HP: {character.health}
-                </p>
-              </button>
-            )
-          })}
-        </div>
+                  <p className="mt-2">
+                    HP: {character.health}
+                  </p>
+                </button>
+              )
+            })}
+          </div>
+        )}
 
         <div className="mt-8">
           <Button
             disabled={
               !selectedCharacter ||
-              isLoading
+              isLoading ||
+              isLoadingCharacters
             }
             onClick={handleReady}
             className="w-full"

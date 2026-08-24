@@ -4,6 +4,7 @@ import RegisterPage from '@/pages/RegisterPage'
 import LoginPage from '@/pages/LoginPage'
 import RequireJoinContext from '@/components/routing/RequireJoinContext'
 import RootRedirect from '@/components/routing/RouteRedirect'
+import UserProvider from '@/context/UserProvider'
 
 import LobbyPage from '@/pages/LobbyPage'
 import CreateRoomPage from '@/pages/CreateRoomPage'
@@ -29,65 +30,70 @@ export const appRoutes = [
   // No navbar
 
   {
-    path: '/',
-    element: <RootRedirect />,
-  },
-  {
     element: <RequireAuth />,
     children: [
       {
-        path: '/Lobby',
-        element: <LobbyPage />,
-      },
-      {
-        path: '/create-room',
-        element: <CreateRoomPage />,
-      },
-      {
-        path: '/',
-        element: <AppShell />,
-
+        element: <UserProvider/>,
         children: [
+          {
+            path: '/',
+            element: <RootRedirect />,
+          },
+          {
+            path: '/',
+            element: <AppShell />,
 
-          { element: <RequireJoinContext />, 
-              children: [{
-                path: 'characters',
-                element: <CharactersPage />,
-              }
+            children: [
+              {
+                path: '/lobby',
+                element: <LobbyPage />,
+              },
+              {
+                path: '/create-room',
+                element: <CreateRoomPage />,
+              },
+
+              { element: <RequireJoinContext />, 
+                  children: [{
+                    path: 'characters',
+                    element: <CharactersPage />,
+                  }
+                ]
+              },
+              {
+                element: <RequireMembership />,
+                children: [
+                  {
+                    path: 'room/:roomId',
+                    element: <RoomPage />,
+                  },
+
+                  {
+                    path: 'abilities',
+                    element: <AbilitiesPage />,
+                  },
+
+
+                  {
+                    path: 'inventory',
+                    element: <InventoryPage />,
+                  },
+                ]
+              },
+
+              {
+                path: 'gallery',
+                element: <GalleryPage />,
+              },
+
+
+              {
+                path: 'profile',
+                element: <ProfilePage />,
+              },
             ]
           },
         ]
-      },
-      {
-        element: <RequireMembership />,
-        children: [
-          {
-            path: 'room/:roomId',
-            element: <RoomPage />,
-          },
-
-          {
-            path: 'abilities',
-            element: <AbilitiesPage />,
-          },
-
-
-          {
-            path: 'inventory',
-            element: <InventoryPage />,
-          },
-        ]
-      },
-
-      {
-        path: 'gallery',
-        element: <GalleryPage />,
-      },
-
-
-      {
-        path: 'profile',
-        element: <ProfilePage />,
       },
     ]
   },

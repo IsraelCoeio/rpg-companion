@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { useAuth } from '@/hooks/useAuth'
+import { useUser } from '@/hooks/useUser'
 import PageContainer from '@/components/layout/PageContainer'
 
 import { subscribeToPlayer } from '@/services/playersService'
@@ -12,49 +12,53 @@ import AbilitiesList from './AbilitiesList'
 function PlayerRoom({ roomId }) {
   const {
     user,
-    loading: authLoading,
-  } = useAuth()
+    loading: userLoading,
+  } = useUser()
 
-  const [playerData, setPlayerData] = useState(null)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [playerData, setPlayerData] =
+    useState(null)
+
+  const [errorMessage, setErrorMessage] =
+    useState('')
 
   useEffect(() => {
     if (
-      authLoading ||
+      userLoading ||
       !user ||
       !roomId
     ) {
       return
     }
 
-    const unsubscribe = subscribeToPlayer(
-      roomId,
-      user.uid,
+    const unsubscribe =
+      subscribeToPlayer(
+        roomId,
+        user.uid,
 
-      (player) => {
-        setPlayerData(player)
-      },
+        (player) => {
+          setPlayerData(player)
+        },
 
-      (error) => {
-        console.error(
-          'Player subscription error:',
-          error,
-        )
+        (error) => {
+          console.error(
+            'Player subscription error:',
+            error,
+          )
 
-        setErrorMessage(
-          'Could not load your character.',
-        )
-      },
-    )
+          setErrorMessage(
+            'Could not load your character.',
+          )
+        },
+      )
 
     return () => unsubscribe()
   }, [
     roomId,
     user,
-    authLoading,
+    userLoading,
   ])
 
-  if (authLoading) {
+  if (userLoading) {
     return (
       <PageContainer>
         Loading account...
@@ -80,7 +84,6 @@ function PlayerRoom({ roomId }) {
 
   return (
     <PageContainer>
-
       <CharacterCard
         playerData={playerData}
       />
@@ -92,7 +95,6 @@ function PlayerRoom({ roomId }) {
       <AbilitiesList
         abilities={playerData.abilities}
       />
-
     </PageContainer>
   )
 }

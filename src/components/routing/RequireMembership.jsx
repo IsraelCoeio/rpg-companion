@@ -1,80 +1,21 @@
-import { useEffect, useState } from 'react'
 import {
   Navigate,
   Outlet,
   useParams,
 } from 'react-router-dom'
 
-import { useAuth } from '@/hooks/useAuth'
-import {
-  getMembership,
-} from '@/services/membershipsService'
+import { useUser } from '@/hooks/useUser'
 
 import PageContainer from '@/components/layout/PageContainer'
 
 
 function RequireMembership() {
-  const { user } = useAuth()
   const { roomId } = useParams()
 
-  const [membership, setMembership] =
-    useState(null)
-
-  const [loading, setLoading] =
-    useState(true)
-
-  const [errorMessage, setErrorMessage] =
-    useState('')
-
-
-  useEffect(() => {
-    if (!user || !roomId) {
-      return
-    }
-
-    let isMounted = true
-
-    async function loadMembership() {
-      try {
-        setLoading(true)
-        setErrorMessage('')
-
-        const fetchedMembership =
-          await getMembership(
-            user.uid,
-            roomId,
-          )
-
-        if (!isMounted) {
-          return
-        }
-
-        setMembership(fetchedMembership)
-      } catch (error) {
-        console.error(
-          'Failed to load room membership:',
-          error,
-        )
-
-        if (isMounted) {
-          setErrorMessage(
-            'Could not verify your room membership.',
-          )
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false)
-        }
-      }
-    }
-
-    loadMembership()
-
-    return () => {
-      isMounted = false
-    }
-  }, [user, roomId])
-
+  const {
+    memberships,
+    loading,
+  } = useUser()
 
   if (loading) {
     return (
@@ -84,25 +25,19 @@ function RequireMembership() {
     )
   }
 
-
-  if (errorMessage) {
-    return (
-      <PageContainer>
-        {errorMessage}
-      </PageContainer>
+  const membership =
+    memberships.find(
+      (item) => item.roomCode === roomId,
     )
-  }
-
 
   if (!membership) {
     return (
       <Navigate
-        to="/Lobby"
+        to="/lobby"
         replace
       />
     )
   }
-
 
   return (
     <Outlet

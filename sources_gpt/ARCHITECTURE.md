@@ -55,18 +55,15 @@ Route Guards are responsible for navigation and UX:
 
 Protected pages assume their required guards have already passed.
 
-The root route is intended to become a smart entry point:
+The root route is a smart entry point:
 
-Unauthenticated:
-    / → /login
+- Authentication restoration is awaited before making a routing decision.
+- Unauthenticated → `/login`
+- Authenticated without a membership → `/Lobby`
+- Authenticated with a membership → `/room/:roomCode`
 
-Authenticated without a room:
-    / → create/join flow
-
-Authenticated with a room:
-    / → /room/:roomCode
-
-For now the project assumes approximately one room per user.
+The redirect currently uses the first membership returned by `getUserMemberships()`.
+Multiple-room selection is not implemented yet.
 
 ## Room architecture
 

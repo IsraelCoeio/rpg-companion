@@ -37,7 +37,7 @@ function LoginPage() {
   password,
 })
 
-    navigate('/lobby', {
+    navigate('/', {
       replace: true,
     })
 
