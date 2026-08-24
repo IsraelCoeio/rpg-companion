@@ -2,9 +2,8 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useOutletContext} from 'react-router-dom'
 
-import { useAuth } from '@/hooks/useAuth'
 
 import {
   addMembership,
@@ -15,9 +14,8 @@ import { getUserProfile } from '@/services/usersService'
 
 import { UserContext } from '@/context/UserContext'
 
-
 function UserProvider() {
-  const { user } = useAuth()
+  const { user } = useOutletContext()
 
   const [profile, setProfile] =
     useState(null)
@@ -106,6 +104,7 @@ function UserProvider() {
   return (
     <UserContext.Provider
       value={{
+        user,
         profile,
         memberships,
         loading,

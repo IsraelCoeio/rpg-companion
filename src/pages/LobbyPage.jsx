@@ -1,88 +1,30 @@
-import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { Navigate ,Link, useNavigate } from 'react-router-dom'
 
 import useGameStore from '@/store/useGameStore'
-import { useAuth } from '@/hooks/useAuth'
+import { useUser } from '@/hooks/useUser'
 
-import { getUserProfile } from '@/services/usersService'
 import { joinRoom } from '@/services/roomsService'
 
 import PageContainer from '@/components/layout/PageContainer'
 import { Button } from '@/components/ui/button'
-import { getUserMemberships } from '@/services/membershipsService'
 
 function LobbyPage() {
   const setRoom = useGameStore((state) => state.setRoom)
 
   const navigate = useNavigate()
 
-  const { user} = useAuth()
+  const {
+    user,
+    memberships,
+    profile,
+    loading,
+  } = useUser()
 
-  const [userProfile, setUserProfile] = useState(null)
-  const [profileLoading, setProfileLoading] = useState(true)
-
+  
   const [roomCode, setRoomCode] = useState('')
   const [isJoining, setIsJoining] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-
-  useEffect(() => {
-
-    let isMounted = true
-
-    async function loadLobbyData() {
-      try {
-        setProfileLoading(true)
-
-        const [
-          profile,
-          memberships,
-        ] = await Promise.all([
-          getUserProfile(user.uid),
-          getUserMemberships(user.uid),
-        ])
-
-        if (!isMounted) {
-          return
-        }
-
-        setUserProfile(profile)
-
-        const membership = memberships[0]
-
-        if (membership) {
-          navigate(
-            `/room/${membership.roomCode}`,
-            {
-              replace: true
-            },
-          )
-
-          return
-        }
-      } catch (error) {
-        console.error(
-          'Failed to load lobby data:',
-          error,
-        )
-
-        if (isMounted) {
-          setErrorMessage(
-            'Failed to load your profile.',
-          )
-        }
-      } finally {
-        if (isMounted) {
-          setProfileLoading(false)
-        }
-      }
-    }
-
-    loadLobbyData()
-
-    return () => {
-      isMounted = false
-    }
-  }, [user, navigate])
 
   async function handleJoinRoom(event) {
     event.preventDefault()
@@ -107,7 +49,7 @@ function LobbyPage() {
 
       setRoom({
         roomCode: normalizedRoomCode,
-        nickname: userProfile?.username ?? 'Player',
+        nickname: profile?.username ?? 'Player',
         userId: user.uid,
         isMaster: false,
       })
@@ -124,7 +66,7 @@ function LobbyPage() {
     }
   }
 
-  if ( profileLoading) {
+  if ( loading) {
     return (
       <PageContainer>
         <div className="flex min-h-[60vh] items-center justify-center">
@@ -135,6 +77,16 @@ function LobbyPage() {
       </PageContainer>
     )
   }
+
+  if (memberships.length > 0) {
+    return (
+      <Navigate
+        to={`/room/${memberships[0].roomCode}`}
+        replace
+      />
+    )
+  }
+
 
   return (
     <PageContainer>
@@ -150,7 +102,7 @@ function LobbyPage() {
           <p className="text-muted-foreground">
             Welcome,{' '}
             <span className="font-medium text-foreground">
-              {userProfile?.username ?? 'Adventurer'}
+              {profile?.username ?? 'Adventurer'}
             </span>
             !
           </p>

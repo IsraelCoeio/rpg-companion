@@ -30,10 +30,6 @@ export const appRoutes = [
   // No navbar
 
   {
-    path: '/',
-    element: <RootRedirect />,
-  },
-  {
     element: <RequireAuth />,
     children: [
       {
@@ -41,11 +37,15 @@ export const appRoutes = [
         children: [
           {
             path: '/',
+            element: <RootRedirect />,
+          },
+          {
+            path: '/',
             element: <AppShell />,
 
             children: [
               {
-                path: '/Lobby',
+                path: '/lobby',
                 element: <LobbyPage />,
               },
               {

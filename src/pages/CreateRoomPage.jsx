@@ -1,4 +1,3 @@
-import { useAuth } from '@/hooks/useAuth'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '@/hooks/useUser'
@@ -15,7 +14,7 @@ import {
 
 
 function CreateRoomPage() {
-  const { user } = useAuth()
+  const { user } = useUser()
 
   const {
     addUserMembership,

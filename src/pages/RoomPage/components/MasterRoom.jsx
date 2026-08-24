@@ -133,7 +133,7 @@ function MasterRoomPage() {
 
                     <div className="mt-4 flex gap-2">
                       <Button
-                        variant="destructive"
+                        variant="secondary"
                         onClick={() =>
                           changeHealth(
                             player,
