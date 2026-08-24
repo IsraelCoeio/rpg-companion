@@ -12,7 +12,7 @@ function RequireJoinContext() {
   if (!roomCode) {
     return (
       <Navigate
-        to="/Lobby"
+        to="/lobby"
         replace
       />
     )

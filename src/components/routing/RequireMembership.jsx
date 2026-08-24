@@ -33,7 +33,7 @@ function RequireMembership() {
   if (!membership) {
     return (
       <Navigate
-        to="/Lobby"
+        to="/lobby"
         replace
       />
     )
