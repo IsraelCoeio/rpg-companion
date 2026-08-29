@@ -4,8 +4,8 @@ import {
 
 import PageContainer from '@/components/layout/PageContainer'
 
-import PlayerRoom from './components/PlayerRoom'
-import MasterRoom from './components/MasterRoom'
+import PlayerRoom from './PlayerRoom/PlayerRoom'
+import MasterRoom from './MasterRoom/MasterRoom'
 
 function RoomPage() {
   const { roomId } = useParams()

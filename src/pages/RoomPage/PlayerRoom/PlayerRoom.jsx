@@ -5,9 +5,9 @@ import PageContainer from '@/components/layout/PageContainer'
 
 import { subscribeToPlayer } from '@/services/playersService'
 
-import CharacterCard from './CharacterCard'
-import AttributesGrid from './AttributesGrid'
-import AbilitiesList from './AbilitiesList'
+import CharacterCard from './components/CharacterCard'
+import AttributesGrid from './components/AttributesGrid'
+import AbilitiesList from './components/AbilitiesList'
 
 function PlayerRoom({ roomId }) {
   const {
