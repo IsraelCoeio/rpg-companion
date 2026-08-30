@@ -1,6 +1,16 @@
-import MasterPlayerCard from './MasterPlayerCard'
+import PlayerCard from './PlayerCard/PlayerCard'
 
-function ConnectedPlayers({ roomId, players }) {
+function ConnectedPlayers({
+  players,
+  pendingChanges,
+  pendingPlayerCount,
+  onChangeHealth,
+  onApply,
+  onDiscard,
+  editingPlayerIds,
+  onStartEditing,
+  onStopEditing,
+}) {
   return (
     <div className="mt-8 rounded-xl border border-dashed border-border p-4">
       <p className="mb-4 text-sm text-muted-foreground">
@@ -12,12 +22,30 @@ function ConnectedPlayers({ roomId, players }) {
           No players connected yet.
         </p>
       ) : (
-        <div className="space-y-4">
+        <div
+          className={
+            pendingPlayerCount >= 2
+              ? 'space-y-4 pb-24'
+              : 'space-y-4'
+          }
+        >
           {players.map((player) => (
-            <MasterPlayerCard
+            <PlayerCard
               key={player.id}
-              roomId={roomId}
               player={player}
+              pendingChange={pendingChanges[player.id]}
+              onChangeHealth={onChangeHealth}
+              onApply={onApply}
+              onDiscard={onDiscard}
+              isEditingHealth={editingPlayerIds.has(
+                player.id,
+              )}
+              onStartEditing={() =>
+                onStartEditing(player.id)
+              }
+              onStopEditing={() =>
+                onStopEditing(player.id)
+              }
             />
           ))}
         </div>

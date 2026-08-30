@@ -2,6 +2,7 @@ import {
   collection,
   doc,
   getDoc,
+  increment,
   onSnapshot,
   serverTimestamp,
   setDoc,
@@ -191,12 +192,16 @@ export function subscribeToPlayer(
 
 
 /**
- * Update a player's health.
+ * Applies a relative health change to a player.
+ *
+ * Example:
+ * amount = -5 → health decreases by 5
+ * amount = +2 → health increases by 2
  */
-export async function updatePlayerHealth(
+export async function applyPlayerHealthChange(
   roomCode,
   userId,
-  health,
+  amount,
 ) {
   if (!roomCode || !userId) {
     throw new Error(
@@ -212,7 +217,7 @@ export async function updatePlayerHealth(
   await updateDoc(
     playerRef,
     {
-      health,
+      health: increment(amount),
       lastSeenAt: serverTimestamp(),
     },
   )
