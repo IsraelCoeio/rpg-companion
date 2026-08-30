@@ -8,14 +8,30 @@ import {
 } from '@/components/ui/card'
 
 function ScreenPlaceholder({ eyebrow, title, description, children }) {
+  const hasHeader =
+    eyebrow || title || description
+
   return (
     <Card>
-      <CardHeader>
-        <Badge>{eyebrow}</Badge>
-        <CardTitle className="mt-3 text-2xl">{title}</CardTitle>
-        <CardDescription className="mt-2">{description}</CardDescription>
-      </CardHeader>
-      <CardContent>{children}</CardContent>
+      {hasHeader && (
+        <CardHeader>
+          {eyebrow && <Badge>{eyebrow}</Badge>}
+          {title && (
+            <CardTitle className="mt-3 text-2xl">
+              {title}
+            </CardTitle>
+          )}
+          {description && (
+            <CardDescription className="mt-2">
+              {description}
+            </CardDescription>
+          )}
+        </CardHeader>
+      )}
+
+      <CardContent className={!hasHeader ? 'pt-6' : undefined}>
+        {children}
+      </CardContent>
     </Card>
   )
 }

@@ -13,23 +13,24 @@ import ConnectedPlayers from './components/ConnectedPlayers'
 
 function MasterRoomPage() {
   const [editingPlayerIds, setEditingPlayerIds] =
-  useState(new Set())
+    useState(new Set())
 
   const startEditing = (playerId) => {
-  setEditingPlayerIds((current) => {
-    const next = new Set(current)
-    next.add(playerId)
-    return next
-  })
-}
+    setEditingPlayerIds((current) => {
+      const next = new Set(current)
+      next.add(playerId)
+      return next
+    })
+  }
 
-const stopEditing = (playerId) => {
-  setEditingPlayerIds((current) => {
-    const next = new Set(current)
-    next.delete(playerId)
-    return next
-  })
-}
+  const stopEditing = (playerId) => {
+    setEditingPlayerIds((current) => {
+      const next = new Set(current)
+      next.delete(playerId)
+      return next
+    })
+  }
+
   const { roomId } = useParams()
 
   const [players, setPlayers] = useState([])
@@ -125,39 +126,39 @@ const stopEditing = (playerId) => {
   }
 
   async function applyAll() {
-  const changes =
-    Object.entries(pendingChanges)
+    const changes =
+      Object.entries(pendingChanges)
 
-  if (changes.length === 0) return
+    if (changes.length === 0) return
 
-  // Exit edit mode immediately.
-  setEditingPlayerIds(new Set())
+    // Exit edit mode immediately.
+    setEditingPlayerIds(new Set())
 
-  // Clear pending changes immediately.
-  setPendingChanges({})
+    // Clear pending changes immediately.
+    setPendingChanges({})
 
-  try {
-    await Promise.all(
-      changes.map(
-        ([playerId, change]) =>
-          applyPlayerHealthChange(
-            roomId,
-            playerId,
-            change.health,
-          ),
-      ),
-    )
-  } catch (error) {
-    console.error(
-      'Failed to apply all player changes:',
-      error,
-    )
+    try {
+      await Promise.all(
+        changes.map(
+          ([playerId, change]) =>
+            applyPlayerHealthChange(
+              roomId,
+              playerId,
+              change.health,
+            ),
+        ),
+      )
+    } catch (error) {
+      console.error(
+        'Failed to apply all player changes:',
+        error,
+      )
 
-    setPendingChanges(
-      Object.fromEntries(changes),
-    )
+      setPendingChanges(
+        Object.fromEntries(changes),
+      )
+    }
   }
-}
 
   useEffect(() => {
     if (!roomId) return
@@ -174,16 +175,16 @@ const stopEditing = (playerId) => {
 
   const pendingPlayerCount =
     Object.keys(pendingChanges).length
-
+    
   return (
-    <PageContainer>
-      <ScreenPlaceholder
-        eyebrow="Room"
-        title={`Room ${roomId}`}
-        description="Share the room code with your players. They can join using the Home screen."
-      >
-        <RoomInfo roomId={roomId} />
+  <PageContainer>
+    <ScreenPlaceholder>
+      <RoomInfo
+        roomId={roomId}
+        hasPlayers={players.length > 0}
+      />
 
+      {players.length > 0 ? (
         <ConnectedPlayers
           players={players}
           pendingChanges={pendingChanges}
@@ -196,9 +197,20 @@ const stopEditing = (playerId) => {
           onStartEditing={startEditing}
           onStopEditing={stopEditing}
         />
-      </ScreenPlaceholder>
-    </PageContainer>
-  )
+      ) : (
+        <div className="mt-8 rounded-xl border border-border bg-secondary/30 px-6 py-8 text-center">
+          <p className="font-display text-lg">
+            Waiting for players to join
+          </p>
+
+          <p className="mt-2 text-sm text-muted-foreground">
+            Share the room code above to invite them to the table.
+          </p>
+        </div>
+      )}
+    </ScreenPlaceholder>
+  </PageContainer>
+)
 }
 
 export default MasterRoomPage

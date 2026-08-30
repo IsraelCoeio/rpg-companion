@@ -12,44 +12,38 @@ function ConnectedPlayers({
   onStopEditing,
 }) {
   return (
-    <div className="mt-8 rounded-xl border border-dashed border-border p-4">
+    <div className="mt-8">
       <p className="mb-4 text-sm text-muted-foreground">
-        Connected players
+        Connected players:
       </p>
 
-      {players.length === 0 ? (
-        <p className="text-muted-foreground">
-          No players connected yet.
-        </p>
-      ) : (
-        <div
-          className={
-            pendingPlayerCount >= 2
-              ? 'space-y-4 pb-24'
-              : 'space-y-4'
-          }
-        >
-          {players.map((player) => (
-            <PlayerCard
-              key={player.id}
-              player={player}
-              pendingChange={pendingChanges[player.id]}
-              onChangeHealth={onChangeHealth}
-              onApply={onApply}
-              onDiscard={onDiscard}
-              isEditingHealth={editingPlayerIds.has(
-                player.id,
-              )}
-              onStartEditing={() =>
-                onStartEditing(player.id)
-              }
-              onStopEditing={() =>
-                onStopEditing(player.id)
-              }
-            />
-          ))}
-        </div>
-      )}
+      <div
+        className={
+          pendingPlayerCount >= 2
+            ? 'space-y-4 pb-24'
+            : 'space-y-4'
+        }
+      >
+        {players.map((player) => (
+          <PlayerCard
+            key={player.id}
+            player={player}
+            pendingChange={pendingChanges[player.id]}
+            onChangeHealth={onChangeHealth}
+            onApply={onApply}
+            onDiscard={onDiscard}
+            isEditingHealth={editingPlayerIds.has(
+              player.id,
+            )}
+            onStartEditing={() =>
+              onStartEditing(player.id)
+            }
+            onStopEditing={() =>
+              onStopEditing(player.id)
+            }
+          />
+        ))}
+      </div>
     </div>
   )
 }
