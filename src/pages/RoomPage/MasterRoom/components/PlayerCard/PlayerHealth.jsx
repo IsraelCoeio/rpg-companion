@@ -49,8 +49,8 @@ function PlayerHealth({
         data-health-controls
         className={
           isEditing
-            ? 'cursor-pointer rounded-xl bg-gradient-to-r from-secondary/60 via-secondary/0 to-secondary/60'
-            : 'cursor-pointer rounded-xl bg-gradient-to-r from-secondary/0 to-secondary/60'
+            ? 'cursor-pointer select-none rounded-xl bg-gradient-to-r from-secondary/60 via-secondary/0 to-secondary/60'
+            : 'cursor-pointer select-none rounded-xl bg-gradient-to-r from-secondary/0 to-secondary/60'
         }
         onClick={handleHealthClick}
       >
