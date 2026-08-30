@@ -1,4 +1,8 @@
-import { readFile } from 'node:fs/promises'
+import {
+  readdir,
+  readFile,
+  stat,
+} from 'node:fs/promises'
 import readline from 'node:readline'
 
 import {
@@ -108,6 +112,50 @@ function deserializeValue(value) {
 
 
   return value
+}
+
+async function findLatestBackup(
+  backupDirectory,
+) {
+  const files =
+    await readdir(
+      backupDirectory,
+    )
+
+  const backups = []
+
+  for (const file of files) {
+    if (
+      !file.toLowerCase().endsWith('.json')
+    ) {
+      continue
+    }
+
+    const filePath =
+      `${backupDirectory}/${file}`
+
+    const fileStats =
+      await stat(filePath)
+
+    backups.push({
+      filePath,
+      modifiedAt:
+        fileStats.mtimeMs,
+    })
+  }
+
+  if (backups.length === 0) {
+    throw new Error(
+      `No backup files found in: ${backupDirectory}`,
+    )
+  }
+
+  backups.sort(
+    (a, b) =>
+      b.modifiedAt - a.modifiedAt,
+  )
+
+  return backups[0].filePath
 }
 
 
@@ -294,11 +342,21 @@ async function confirmProductionRestore(
 async function restore() {
   const args = process.argv.slice(2)
 
-  const backupPath =
+  const latest =
+    args.includes('--latest')
+
+  let backupPath =
     args.find(
       (argument) =>
         !argument.startsWith('--'),
     )
+
+  if (latest) {
+    backupPath =
+      await findLatestBackup(
+        'backups',
+      )
+  }
 
 
   if (!backupPath) {
