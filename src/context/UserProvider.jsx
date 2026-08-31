@@ -100,6 +100,16 @@ function UserProvider() {
     return membership
   }
 
+  function setUserMembership(membership) {
+  setMemberships((current) => [
+    ...current.filter(
+      (item) =>
+        item.roomCode !== membership.roomCode,
+    ),
+    membership,
+  ])
+}
+
 
   return (
     <UserContext.Provider
@@ -108,6 +118,7 @@ function UserProvider() {
         profile,
         memberships,
         loading,
+        setUserMembership,
         addUserMembership,
       }}
     >

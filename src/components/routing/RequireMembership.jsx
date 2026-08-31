@@ -30,6 +30,8 @@ function RequireMembership() {
       (item) => item.roomCode === roomId,
     )
 
+  
+
   if (!membership) {
     return (
       <Navigate
@@ -38,6 +40,8 @@ function RequireMembership() {
       />
     )
   }
+
+  
 
   return (
     <Outlet

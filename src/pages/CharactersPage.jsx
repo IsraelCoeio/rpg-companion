@@ -15,7 +15,7 @@ import { useUser } from '@/hooks/useUser'
 function CharactersPage() {
   const {
     user,
-    addUserMembership,
+    setUserMembership,
   } = useUser()
   const navigate = useNavigate()
 
@@ -127,7 +127,7 @@ function CharactersPage() {
        *
        * rooms/{roomCode}/players/{user.uid}
        */
-      await addPlayer(
+      const membership = await addPlayer(
         roomCode,
         user.uid,
         {
@@ -140,10 +140,7 @@ function CharactersPage() {
         },
       )
 
-      await addUserMembership({
-        roomCode,
-        role: 'player',
-      })
+      setUserMembership(membership)
 
       /*
        * Now the player officially belongs

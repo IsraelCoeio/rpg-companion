@@ -2,7 +2,7 @@ import {
   doc,
   getDoc,
   serverTimestamp,
-  setDoc,
+  writeBatch,
 } from 'firebase/firestore'
 
 import { db } from '@/firebase/config'
@@ -37,11 +37,29 @@ export async function createRoom({
     normalizedRoomCode,
   )
 
-  await setDoc(roomRef, {
+  const membershipRef = doc(
+    db,
+    'users',
+    masterId,
+    'memberships',
+    normalizedRoomCode,
+  )
+
+  const batch = writeBatch(db)
+
+  batch.set(roomRef, {
     roomCode: normalizedRoomCode,
     masterId,
     createdAt: serverTimestamp(),
   })
+
+  batch.set(membershipRef, {
+    roomCode: normalizedRoomCode,
+    role: 'master',
+    joinedAt: serverTimestamp(),
+  })
+
+  await batch.commit()
 
   return {
     roomCode: normalizedRoomCode,
@@ -57,23 +75,8 @@ export async function joinRoom({
   const normalizedRoomCode =
     roomCode.trim().toUpperCase()
 
-  const roomRef = doc(
-    db,
-    'rooms',
-    normalizedRoomCode,
-  )
-
-  const roomSnapshot = await getDoc(roomRef)
-
-  if (!roomSnapshot.exists()) {
-    throw new Error('Room does not exist.')
-  }
-
-  const roomData = roomSnapshot.data()
-
   return {
     roomCode: normalizedRoomCode,
-    masterId: roomData.masterId,
     userId,
   }
 }

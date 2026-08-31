@@ -7,18 +7,13 @@ import PageContainer from '@/components/layout/PageContainer'
 import ScreenPlaceholder from '@/components/layout/ScreenPlaceholder'
 import { Button } from '@/components/ui/button'
 
+
 import {
   createRoom,
-  roomExists,
 } from '@/services/roomsService'
 
-
 function CreateRoomPage() {
-  const { user } = useUser()
-
-  const {
-    addUserMembership,
-  } = useUser()
+  const { user, setUserMembership } = useUser()
 
   const setRoom = useGameStore(
     (state) => state.setRoom,
@@ -54,23 +49,13 @@ function CreateRoomPage() {
     setErrorMessage('')
 
     try {
-      const exists = await roomExists(
-        normalizedRoomCode,
-      )
-
-      if (exists) {
-        setErrorMessage(
-          'This room code already exists.',
-        )
-        return
-      }
 
       const createdRoom = await createRoom({
         roomCode: normalizedRoomCode,
         masterId: user.uid,
       })
-      
-      await addUserMembership({
+
+      setUserMembership({
         roomCode: createdRoom.roomCode,
         role: 'master',
       })

@@ -4,8 +4,6 @@ import { Navigate ,Link, useNavigate } from 'react-router-dom'
 import useGameStore from '@/store/useGameStore'
 import { useUser } from '@/hooks/useUser'
 
-import { joinRoom } from '@/services/roomsService'
-
 import PageContainer from '@/components/layout/PageContainer'
 import { Button } from '@/components/ui/button'
 
@@ -42,10 +40,6 @@ function LobbyPage() {
     setErrorMessage('')
 
     try {
-      await joinRoom({
-        roomCode: normalizedRoomCode,
-        uid: user.uid,
-      })
 
       setRoom({
         roomCode: normalizedRoomCode,

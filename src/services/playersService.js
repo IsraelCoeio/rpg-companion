@@ -5,7 +5,7 @@ import {
   increment,
   onSnapshot,
   serverTimestamp,
-  setDoc,
+  writeBatch,
   updateDoc,
 } from 'firebase/firestore'
 
@@ -54,7 +54,17 @@ export async function addPlayer(
     userId,
   )
 
-  await setDoc(
+  const membershipRef = doc(
+    db,
+    'users',
+    userId,
+    'memberships',
+    roomCode,
+  )
+
+  const batch = writeBatch(db)
+
+  batch.set(
     playerRef,
     {
       userId,
@@ -79,7 +89,25 @@ export async function addPlayer(
     },
   )
 
-  return userId
+  batch.set(
+    membershipRef,
+    {
+      roomCode,
+      role: 'player',
+      joinedAt: serverTimestamp(),
+    },
+    {
+      merge: true,
+    },
+  )
+
+  await batch.commit()
+
+  return {
+    userId,
+    roomCode,
+    role: 'player',
+  }
 }
 
 

@@ -1,0 +1,269 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /*
+     * ------------------------------------------------------------
+     * Helpers
+     * ------------------------------------------------------------
+     */
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isUser(userId) {
+      return signedIn() &&
+        request.auth.uid == userId;
+    }
+
+    function membershipPath(userId, roomCode) {
+      return /databases/$(database)/documents/users/$(userId)/memberships/$(roomCode);
+    }
+
+    function roomPath(roomCode) {
+      return /databases/$(database)/documents/rooms/$(roomCode);
+    }
+
+    function playerPath(roomCode, userId) {
+      return /databases/$(database)/documents/rooms/$(roomCode)/players/$(userId);
+    }
+
+    function isMember(roomCode) {
+      return signedIn() &&
+        exists(
+          membershipPath(
+            request.auth.uid,
+            roomCode
+          )
+        );
+    }
+
+    function isMaster(roomCode) {
+      return signedIn() &&
+        get(
+          membershipPath(
+            request.auth.uid,
+            roomCode
+          )
+        ).data.role == 'master';
+    }
+
+    /*
+     * ------------------------------------------------------------
+     * Users
+     * ------------------------------------------------------------
+     */
+
+    match /users/{userId} {
+
+      // Users may only access their own profile.
+      allow get: if isUser(userId);
+
+      // getDocs() on users/{uid}/memberships is handled below.
+      allow list: if false;
+
+      // Registration creates the profile belonging to the
+      // authenticated Firebase user.
+      allow create: if isUser(userId) &&
+        request.resource.data.uid == request.auth.uid &&
+        request.resource.data.username is string &&
+        request.resource.data.createdAt == request.time;
+
+      // Profile currently has no client-side editing functionality.
+      allow update, delete: if false;
+
+
+      /*
+       * ----------------------------------------------------------
+       * Memberships
+       * ----------------------------------------------------------
+       */
+
+      match /memberships/{roomCode} {
+
+        // A user may inspect their own memberships.
+        allow get, list: if isUser(userId);
+
+        /*
+         * Membership creation is allowed only for the authenticated
+         * user represented by {userId}.
+         *
+         * A player membership must be created atomically with the
+         * corresponding player document.
+         *
+         * A master membership must be created atomically with the
+         * corresponding room document.
+         */
+        allow create: if
+          isUser(userId) &&
+          request.resource.data.roomCode == roomCode &&
+          request.resource.data.role in ['player', 'master'] &&
+
+          (
+            (
+              request.resource.data.role == 'player' &&
+              existsAfter(
+                playerPath(roomCode, userId)
+              ) &&
+              getAfter(
+                playerPath(roomCode, userId)
+              ).data.userId == userId &&
+              getAfter(
+                playerPath(roomCode, userId)
+              ).data.role == 'player'
+            )
+            ||
+            (
+              request.resource.data.role == 'master' &&
+              existsAfter(
+                roomPath(roomCode)
+              ) &&
+              getAfter(
+                roomPath(roomCode)
+              ).data.masterId == userId &&
+              getAfter(
+                roomPath(roomCode)
+              ).data.roomCode == roomCode
+            )
+          );
+
+        /*
+         * Memberships are currently created by joining/creating a room.
+         * There is no UI for modifying or deleting them independently.
+         */
+        allow update, delete: if false;
+      }
+    }
+
+
+    /*
+     * ------------------------------------------------------------
+     * Rooms
+     * ------------------------------------------------------------
+     */
+
+    match /rooms/{roomCode} {
+
+      /*
+       * A room is only readable by someone who already belongs to it.
+       *
+       * Joining does NOT require reading the room first.
+       * The membership/player batch validates the room through
+       * getAfter().
+       */
+      allow get: if isMember(roomCode);
+
+      allow list: if false;
+
+      /*
+       * Room creation must happen atomically with the creator's
+       * master membership.
+       */
+      allow create: if signedIn() &&
+        request.resource.data.roomCode == roomCode &&
+        request.resource.data.masterId == request.auth.uid &&
+        request.resource.data.createdAt == request.time &&
+        existsAfter(
+          membershipPath(
+            request.auth.uid,
+            roomCode
+          )
+        ) &&
+        getAfter(
+          membershipPath(
+            request.auth.uid,
+            roomCode
+          )
+        ).data.role == 'master';
+
+      /*
+       * There is currently no client-side room editing/deletion.
+       */
+      allow update, delete: if false;
+
+
+      /*
+       * ----------------------------------------------------------
+       * Players
+       * ----------------------------------------------------------
+       */
+
+      match /players/{playerId} {
+
+        /*
+         * Every room member can see the room's players.
+         *
+         * This supports both:
+         * - Master: subscribeToPlayers()
+         * - Player: subscribeToPlayer()
+         */
+        allow get, list: if isMember(roomCode);
+
+        /*
+         * A player document can only be created for the authenticated
+         * user and must be created atomically with that user's
+         * player membership.
+         */
+        allow create: if
+          signedIn() &&
+          playerId == request.auth.uid &&
+          request.resource.data.userId == request.auth.uid &&
+          request.resource.data.role == 'player' &&
+          request.resource.data.health is number &&
+          request.resource.data.maxHealth is number &&
+          request.resource.data.health >= 0 &&
+          request.resource.data.health <= request.resource.data.maxHealth &&
+          request.resource.data.lastSeenAt == request.time &&
+          request.resource.data.joinedAt == request.time &&
+          existsAfter(
+            membershipPath(
+              request.auth.uid,
+              roomCode
+            )
+          ) &&
+          getAfter(
+            membershipPath(
+              request.auth.uid,
+              roomCode
+            )
+          ).data.role == 'player';
+
+        /*
+         * Master may only change health and lastSeenAt.
+         *
+         * This protects all other player data from being modified
+         * through the Master HP operation.
+         */
+        allow update: if
+          isMaster(roomCode) &&
+          request.resource.data.diff(resource.data)
+            .affectedKeys()
+            .hasOnly([
+              'health',
+              'lastSeenAt'
+            ]) &&
+          request.resource.data.health is number &&
+          request.resource.data.health >= 0 &&
+          request.resource.data.health <= request.resource.data.maxHealth &&
+          request.resource.data.lastSeenAt == request.time;
+
+        /*
+         * Players currently have no client-side update operation.
+         * They also cannot delete their player document.
+         */
+        allow delete: if false;
+      }
+    }
+
+
+    /*
+     * ------------------------------------------------------------
+     * Default deny
+     * ------------------------------------------------------------
+     *
+     * Anything not explicitly allowed above remains denied.
+     */
+  }
+}
