@@ -97,37 +97,40 @@ service cloud.firestore {
          * corresponding room document.
          */
         allow create: if
-          isUser(userId) &&
-          request.resource.data.roomCode == roomCode &&
-          request.resource.data.role in ['player', 'master'] &&
+        isUser(userId) &&
+        request.resource.data.roomCode == roomCode &&
+        request.resource.data.role in ['player', 'master'] &&
 
+        (
           (
-            (
-              request.resource.data.role == 'player' &&
-              existsAfter(
-                playerPath(roomCode, userId)
-              ) &&
-              getAfter(
-                playerPath(roomCode, userId)
-              ).data.userId == userId &&
-              getAfter(
-                playerPath(roomCode, userId)
-              ).data.role == 'player'
-            )
-            ||
-            (
-              request.resource.data.role == 'master' &&
-              existsAfter(
-                roomPath(roomCode)
-              ) &&
-              getAfter(
-                roomPath(roomCode)
-              ).data.masterId == userId &&
-              getAfter(
-                roomPath(roomCode)
-              ).data.roomCode == roomCode
-            )
-          );
+            request.resource.data.role == 'player' &&
+            exists(
+              roomPath(roomCode)
+            ) &&
+            existsAfter(
+              playerPath(roomCode, userId)
+            ) &&
+            getAfter(
+              playerPath(roomCode, userId)
+            ).data.userId == userId &&
+            getAfter(
+              playerPath(roomCode, userId)
+            ).data.role == 'player'
+          )
+          ||
+          (
+            request.resource.data.role == 'master' &&
+            existsAfter(
+              roomPath(roomCode)
+            ) &&
+            getAfter(
+              roomPath(roomCode)
+            ).data.masterId == userId &&
+            getAfter(
+              roomPath(roomCode)
+            ).data.roomCode == roomCode
+          )
+        );
 
         /*
          * Memberships are currently created by joining/creating a room.
@@ -153,7 +156,7 @@ service cloud.firestore {
        * The membership/player batch validates the room through
        * getAfter().
        */
-      allow get: if isMember(roomCode);
+      allow get: if signedIn();
 
       allow list: if false;
 

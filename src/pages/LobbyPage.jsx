@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Navigate ,Link, useNavigate } from 'react-router-dom'
+import { roomExists } from '@/services/roomsService'
 
 import useGameStore from '@/store/useGameStore'
 import { useUser } from '@/hooks/useUser'
@@ -25,8 +26,9 @@ function LobbyPage() {
   const [errorMessage, setErrorMessage] = useState('')
 
   async function handleJoinRoom(event) {
+    
     event.preventDefault()
-
+    
     const normalizedRoomCode = roomCode
       .trim()
       .toUpperCase()
@@ -40,6 +42,12 @@ function LobbyPage() {
     setErrorMessage('')
 
     try {
+      const exists = await roomExists(normalizedRoomCode)
+
+      if (!exists) {
+        setErrorMessage('This room does not exist.')
+        return
+      }
 
       setRoom({
         roomCode: normalizedRoomCode,
