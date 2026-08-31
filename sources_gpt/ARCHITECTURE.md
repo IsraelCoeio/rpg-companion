@@ -65,6 +65,8 @@ The root route is a smart entry point:
 The redirect currently uses the first membership returned by `getUserMemberships()`.
 Multiple-room selection is not implemented yet.
 
+The lobby performs a lightweight room-existence check before sending a prospective player to character selection. This is UX validation, not authorization.
+
 ## Room architecture
 
 There is only one room route:
@@ -100,14 +102,19 @@ The frontend is untrusted. Users can manipulate URLs, React state, Zustand, loca
 
 Never use Route Guards or hidden UI as a security boundary.
 
-Rules must independently enforce:
+Current rules enforce:
 
-- Room membership
-- Roles
-- Ownership
-- Read permissions
-- Write permissions
-- Master-only operations
+- Authentication and user ownership
+- Room membership for room/player reads
+- Atomic room + master-membership creation
+- Atomic player + membership creation for players
+- Master-only player HP updates
+- Ownership of player documents
+- Restricted writable fields
+- No client-side room, membership, or player deletion
+- Default deny for unspecified operations
+
+Room joining does not require a room read to authorize the membership/player write. The existence of the room is checked in the membership rule, while the corresponding player and membership writes are validated atomically with `getAfter()` / `existsAfter()`.
 
 Mental model:
 

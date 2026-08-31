@@ -4,10 +4,11 @@
 
 ### Security & navigation
 - [x] Centralize authentication and membership checks with Route Guards.
-- [ ] Enforce authorization through Firestore Rules.
+- [x] Enforce authorization through Firestore Rules.
 - [x] Restrict UI/pages according to authentication and room membership.
 - [x] Make `/` intelligently redirect authenticated users to their room.
 - [ ] Finish logged-in UI state.
+- [x] Validate room existence before allowing the join flow to continue.
 
 ### Room / gameplay
 - Improve Master player management.

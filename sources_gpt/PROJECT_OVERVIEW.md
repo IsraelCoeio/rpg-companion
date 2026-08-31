@@ -22,26 +22,26 @@ It is currently system-agnostic. There is no fixed D&D/Pathfinder/etc. ruleset. 
 
 1. User registers/logs in.
 2. User enters the lobby.
-3. Master creates a room using a room code.
-4. Creator automatically becomes Master.
-5. Other users join an existing room as Players.
-6. Players choose a predefined character.
-7. Users enter the room.
-8. Master controls essential information such as player HP.
-9. Players access their attributes and abilities.
+3. Master creates a room using a room code; creator automatically becomes Master through an atomic Firestore write.
+4. Other users enter an existing room code; the client checks that the room exists before proceeding.
+5. Players choose a predefined character.
+6. Users enter the room.
+7. Master controls essential information such as player HP.
+8. Players access their attributes and abilities.
 
 ## Current features
 
 - Authentication
 - Lobby
 - Room creation
-- Room joining
+- Room joining with room-existence validation
 - Master/player roles
 - Character selection
 - Room interface
 - Player attributes
 - Player abilities
 - Master HP control
+- Firestore authorization rules for room, membership, and player operations
 
 ## Product direction
 
