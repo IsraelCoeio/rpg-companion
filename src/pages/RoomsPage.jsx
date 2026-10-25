@@ -7,9 +7,9 @@ function RoomsPage() {
   return (
     <PageContainer>
       <ScreenPlaceholder
-        eyebrow="Rooms"
-        title="Room Lobby Screen"
-        description="This is the room listing shell. Business actions are intentionally not implemented in Sprint 1."
+        eyebrow="Salas"
+        title="Tela de Lobby da Sala"
+        description="Esta é a estrutura de listagem de salas. Ações comerciais não são implementadas intencionalmente na Sprint 1."
       >
         <div className="flex flex-wrap gap-3">
           <Button asChild>

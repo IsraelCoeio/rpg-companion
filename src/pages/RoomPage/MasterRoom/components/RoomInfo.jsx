@@ -2,7 +2,7 @@ function RoomInfo({ roomId, hasPlayers }) {
   return (
     <div className="text-center">
       <p className="text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
-        Table
+        Sala
       </p>
 
       <h1 className="mt-2 font-display text-4xl font-semibold tracking-[0.2em]">
@@ -10,8 +10,8 @@ function RoomInfo({ roomId, hasPlayers }) {
       </h1>
 
       <p className="mt-3 text-sm text-muted-foreground">
-        This is the room code.
-        {hasPlayers && ' Give it to new players to join.'}
+        Esse é o código da sala.
+        {hasPlayers && ' Compartilhe com seus amigos para que eles entrem na sala.'}
       </p>
     </div>
   )

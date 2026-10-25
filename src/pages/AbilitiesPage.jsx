@@ -22,9 +22,9 @@ function AbilitiesPage() {
     return (
       <PageContainer>
         <ScreenPlaceholder
-          eyebrow="Abilities"
-          title="No abilities"
-          description="This character has no abilities yet."
+          eyebrow="Habilidades"
+          title="Sem habilidades"
+          description="Este personagem não possui habilidades para exibir."
         />
       </PageContainer>
     )
@@ -51,9 +51,9 @@ function AbilitiesPage() {
   return (
     <PageContainer>
       <ScreenPlaceholder
-        eyebrow="Abilities"
+        eyebrow="Habilidades"
         title={character?.name}
-        description="Swipe to view your abilities."
+        description="Deslize para ver suas habilidades."
       >
         <div className="space-y-4">
 

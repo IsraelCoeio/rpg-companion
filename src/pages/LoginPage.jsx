@@ -62,11 +62,11 @@ function LoginPage() {
 
         <div className="space-y-2 text-center">
           <h1 className="font-display text-4xl">
-            RPG Companion
+            RPGesus
           </h1>
 
           <p className="text-muted-foreground">
-            Welcome back, adventurer.
+            Bem-vindo de volta, aventureiro!
           </p>
         </div>
 
@@ -75,7 +75,7 @@ function LoginPage() {
         <div className="rounded-2xl border border-border bg-card p-6 shadow-lg">
 
           <h2 className="mb-6 text-center font-display text-2xl">
-            Log In
+            Entrar
           </h2>
 
           <form
@@ -90,7 +90,7 @@ function LoginPage() {
                 htmlFor="username"
                 className="text-sm font-medium"
               >
-                Username
+                Nome de Usuário
               </label>
 
               <input
@@ -100,7 +100,7 @@ function LoginPage() {
                   setUsername(event.target.value)
                   setErrorMessage('')
                 }}
-                placeholder="Your username"
+                placeholder="Seu nome de usuário"
                 autoComplete="username"
                 className="h-11 w-full rounded-xl border border-border bg-background px-4 text-sm text-foreground outline-none transition focus:ring-2 focus:ring-ring/70"
               />
@@ -113,7 +113,7 @@ function LoginPage() {
                 htmlFor="password"
                 className="text-sm font-medium"
               >
-                Password
+                Senha
               </label>
 
               <input
@@ -124,7 +124,7 @@ function LoginPage() {
                   setPassword(event.target.value)
                   setErrorMessage('')
                 }}
-                placeholder="Your password"
+                placeholder="Sua senha"
                 autoComplete="current-password"
                 className="h-11 w-full rounded-xl border border-border bg-background px-4 text-sm text-foreground outline-none transition focus:ring-2 focus:ring-ring/70"
               />
@@ -145,7 +145,7 @@ function LoginPage() {
               className="w-full"
               disabled={isLoggingIn}
             >
-              {isLoggingIn ? 'Logging in...' : 'Log In'}
+              {isLoggingIn ? 'Logging in...' : 'Entrar'}
             </Button>
 
           </form>
@@ -155,13 +155,13 @@ function LoginPage() {
         {/* Registration */}
 
         <div className="text-center text-sm text-muted-foreground">
-          <span>Don't have an account? </span>
+          <span>Não tem uma conta? </span>
 
           <Link
             to="/register"
             className="font-medium text-primary hover:underline"
           >
-            Create one
+            Criar conta
           </Link>
         </div>
 

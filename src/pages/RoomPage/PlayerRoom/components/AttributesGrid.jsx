@@ -7,11 +7,19 @@ function AttributesGrid({ attributes }) {
         'knowledge',
     ]
 
+    const ATTRIBUTE_LABELS = {
+        strength: 'Força',
+        agility: 'Agilidade',
+        resistance: 'Resistência',
+        presence: 'Presença',
+        knowledge: 'Conhecimento',
+    }
+
     return (
         <div className="rounded-xl border border-border bg-secondary/40 p-4">
 
         <h2 className="font-display text-xl mb-3">
-            Attributes
+            Atributos
         </h2>
 
         <div className="grid grid-cols-2 gap-3">
@@ -22,7 +30,7 @@ function AttributesGrid({ attributes }) {
                     className="rounded-lg border border-border p-3"
                 >
                     <p className="text-sm text-muted-foreground capitalize">
-                    {name}
+                    {ATTRIBUTE_LABELS[name]}
                     </p>
 
                     <p className="text-xl font-display">

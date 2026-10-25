@@ -71,7 +71,7 @@ function PlayerPendingChanges({
   variant="ghost"
   className="h-7 shrink-0 rounded-full border border-primary/40 bg-primary/10 px-2 text-primary hover:bg-primary/20"
   onClick={() => onApply(player.id)}
-  aria-label={`Apply changes to ${player.nickname}`}
+  aria-label={`Aplicar alterações para ${player.nickname}`}
 >
   <PaperPlane
     size={16}

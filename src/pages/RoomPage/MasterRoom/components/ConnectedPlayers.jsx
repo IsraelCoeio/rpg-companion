@@ -14,7 +14,7 @@ function ConnectedPlayers({
   return (
     <div className="mt-8">
       <p className="mb-4 text-sm text-muted-foreground">
-        Connected players:
+        Lista de jogadores:
       </p>
 
       <div

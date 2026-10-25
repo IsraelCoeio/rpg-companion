@@ -23,51 +23,51 @@ function HomePage() {
     <PageContainer>
       <ScreenPlaceholder
         eyebrow="Dados & Discípulos"
-        title="Join an Existing Room"
-        description="Enter the room code provided by the Game Master."
+        title="Entrar em uma Sala Existente"
+        description="Digite o código da sala fornecido pelo Narrador."
       >
         <form onSubmit={handleJoinRoom} className="space-y-4">
           <div className="space-y-2">
             <label htmlFor="room-code" className="text-sm font-medium">
-              Room Code
+              Código da Sala
             </label>
 
             <input
               id="room-code"
               value={roomCode}
               onChange={(event) => setRoomCode(event.target.value.toUpperCase())}
-              placeholder="ABC12345"
+              placeholder="Nome da Sala"
               className="h-11 w-full rounded-xl border border-border bg-background px-4 text-sm text-foreground outline-none transition focus:ring-2 focus:ring-ring/70"
             />
           </div>
 
           <div className="space-y-2">
             <label htmlFor="nickname" className="text-sm font-medium">
-              Nickname
+              Apelido
             </label>
 
             <input
               id="nickname"
               value={nickname}
               onChange={(event) => setNickname(event.target.value)}
-              placeholder="Your name"
+              placeholder="Seu nome"
               className="h-11 w-full rounded-xl border border-border bg-background px-4 text-sm text-foreground outline-none transition focus:ring-2 focus:ring-ring/70"
             />
           </div>
 
           <Button type="submit" className="w-full">
-            Join Room
+            Entrar na Sala
           </Button>
         </form>
 
         <div className="mt-8 border-t border-border pt-6">
           <p className="mb-4 text-center text-sm text-muted-foreground">
-            Are you the Game Master?
+            Você é o Narrador?
           </p>
 
           <Button asChild variant="secondary" className="w-full">
             <Link to="/create-room">
-              Create a New Room
+              Criar uma Sala
             </Link>
           </Button>
         </div>

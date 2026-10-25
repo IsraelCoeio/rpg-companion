@@ -102,7 +102,7 @@ function LobbyPage() {
           </h1>
 
           <p className="text-muted-foreground">
-            Welcome,{' '}
+            Bem-vindo,{' '}
             <span className="font-medium text-foreground">
               {profile?.username ?? 'Adventurer'}
             </span>
@@ -114,11 +114,11 @@ function LobbyPage() {
 
         <div className=" p-6 text-center shadow-lg">
           <p className="font-display text-xl">
-            You're not in any tables yet.
+            Você não está em nenhuma sala no momento.
           </p>
 
           <p className="mt-2 text-sm ">
-            Join an adventure or create a room and invite your friends.
+            Entre em uma sala ou crie uma nova para começar.
           </p>
         </div>
 
@@ -127,7 +127,7 @@ function LobbyPage() {
         <div className="rounded-2xl border border-border bg-card p-6 shadow-lg">
 
           <h2 className="mb-5 text-center font-display text-2xl">
-            Join a Room
+            Entrar em uma Sala
           </h2>
 
           <form
@@ -139,7 +139,7 @@ function LobbyPage() {
                 htmlFor="room-code"
                 className="mb-2 block text-sm font-medium"
               >
-                Room Code
+                Nome da Sala
               </label>
 
               <input
@@ -152,7 +152,7 @@ function LobbyPage() {
 
                   setErrorMessage('')
                 }}
-                placeholder="HALLELUYA"
+                placeholder="Nome da Sala"
                 className="h-11 w-full rounded-xl border border-border bg-background px-4 text-sm text-foreground outline-none transition focus:ring-2 focus:ring-ring/70"
               />
             </div>
@@ -162,7 +162,7 @@ function LobbyPage() {
               className="w-full"
               disabled={isJoining}
             >
-              {isJoining ? 'Joining...' : 'Join Room'}
+              {isJoining ? 'Entrando...' : 'Entrar na Sala'}
             </Button>
           </form>
 
@@ -179,7 +179,7 @@ function LobbyPage() {
           <div className="h-px flex-1 bg-border" />
 
           <span className="text-sm text-muted-foreground">
-            OR
+            OU
           </span>
 
           <div className="h-px flex-1 bg-border" />
@@ -190,11 +190,11 @@ function LobbyPage() {
         <div className="rounded-2xl border border-border bg-card p-6 text-center shadow-lg">
 
           <h2 className="font-display text-xl">
-            Game Master
+            Seja o narrador
           </h2>
 
           <p className="mb-6 mt-2 text-sm text-muted-foreground">
-            Create a room and invite your players.
+            Crie uma sala e convide seus amigos para jogar.
           </p>
 
           <Button
@@ -203,7 +203,7 @@ function LobbyPage() {
             className="w-full"
           >
             <Link to="/create-room">
-              Create Room
+              Criar uma Sala
             </Link>
           </Button>
 

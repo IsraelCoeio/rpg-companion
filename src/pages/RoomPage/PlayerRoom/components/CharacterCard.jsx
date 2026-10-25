@@ -13,7 +13,7 @@ function CharacterCard({ playerData}) {
 
           <div className="mb-2 flex justify-between text-sm">
             <span>
-              Health
+              Saúde
             </span>
 
             <span>

@@ -42,9 +42,9 @@ function UserMenu() {
 
   const membershipLabel =
     membership?.role === 'master'
-      ? 'Narrator'
+      ? 'Narrador'
       : membership?.role === 'player'
-        ? 'Player'
+        ? 'Jogador'
         : null
 
   useEffect(() => {
@@ -85,7 +85,7 @@ function UserMenu() {
       await logoutUser()
     } catch (error) {
       console.error(
-        'Failed to log out:',
+        'Falha ao sair:',
         error,
       )
     }
@@ -99,7 +99,7 @@ function UserMenu() {
       <button
         type="button"
         className="flex cursor-pointer items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/80"
-        aria-label="Open user menu"
+        aria-label="Abrir menu do usuário"
         aria-expanded={isOpen}
         onClick={() => setIsOpen((open) => !open)}
       >
@@ -139,7 +139,7 @@ function UserMenu() {
             onClick={handleLogout}
           >
             <LogOut size={16} />
-            Log out
+            Sair
           </Button>
         </div>
       )}

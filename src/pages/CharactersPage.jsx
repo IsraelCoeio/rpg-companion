@@ -166,9 +166,9 @@ function CharactersPage() {
   return (
     <PageContainer>
       <ScreenPlaceholder
-        eyebrow="Characters"
-        title="Choose your character"
-        description="Select your character for the adventure."
+        eyebrow="Personagens"
+        title="Escolha seu personagem"
+        description="Selecione seu personagem para a aventura."
       >
 
         {errorMessage && (
@@ -180,7 +180,7 @@ function CharactersPage() {
         {isLoadingCharacters ? (
           <div className="flex min-h-32 items-center justify-center">
             <p className="text-muted-foreground">
-              Loading characters...
+              Carregando personagens...
             </p>
           </div>
         ) : (
@@ -240,8 +240,8 @@ function CharactersPage() {
             className="w-full"
           >
             {isLoading
-              ? 'Joining...'
-              : 'Ready'}
+              ? 'Entrando...'
+              : 'Pronto'}
           </Button>
         </div>
 

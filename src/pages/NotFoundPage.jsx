@@ -8,11 +8,11 @@ function NotFoundPage() {
     <PageContainer>
       <ScreenPlaceholder
         eyebrow="404"
-        title="Path Not Found"
-        description="This route does not exist in the current navigation map."
+        title="Caminho não encontrado"
+        description="Esta rota não existe no mapa de navegação atual."
       >
         <Button asChild>
-          <Link to="/">Return to Home</Link>
+          <Link to="/">Voltar ao Início</Link>
         </Button>
       </ScreenPlaceholder>
     </PageContainer>

@@ -111,7 +111,7 @@ function MasterRoomPage() {
       )
     } catch (error) {
       console.error(
-        'Failed to apply player health change:',
+        'Falha ao aplicar mudança de saúde do jogador:',
         error,
       )
 
@@ -200,11 +200,11 @@ function MasterRoomPage() {
       ) : (
         <div className="mt-8 rounded-xl border border-border bg-secondary/30 px-6 py-8 text-center">
           <p className="font-display text-lg">
-            Waiting for players to join
+            Esperando jogadores se conectarem...
           </p>
 
           <p className="mt-2 text-sm text-muted-foreground">
-            Share the room code above to invite them to the table.
+            Compartilhe o código da sala acima para convidar eles para a mesa.
           </p>
         </div>
       )}

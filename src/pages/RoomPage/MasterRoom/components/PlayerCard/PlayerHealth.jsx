@@ -103,7 +103,7 @@ function PlayerHealth({
               {/* Label + stats */}
               <div className="flex items-baseline justify-between">
                 <span className="text-sm text-muted-foreground">
-                  Health
+                  Saúde
                 </span>
 
                 <span className="flex items-baseline gap-1">
@@ -138,7 +138,7 @@ function PlayerHealth({
                 event.stopPropagation()
                 onToggle()
               }}
-              aria-label="Edit health"
+              aria-label="Editar saúde do jogador"
             >
               <PencilSimple size={16} />
             </button>

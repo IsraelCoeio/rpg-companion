@@ -4,7 +4,7 @@ function AbilitiesList({ abilities }) {
     <div className="rounded-xl border border-border bg-secondary/40 p-4">
 
   <h2 className="font-display text-xl mb-3">
-    Abilities
+    Habilidades
   </h2>
 
   <div className="space-y-2">

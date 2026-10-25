@@ -21,27 +21,27 @@ function RegisterPage() {
     const normalizedUsername = username.trim()
 
     if (!normalizedUsername) {
-      setErrorMessage('Username is required.')
+      setErrorMessage('Nome de usuário é obrigatório.')
       return
     }
 
     if (normalizedUsername.length < 3) {
-      setErrorMessage('Username must be at least 3 characters.')
+      setErrorMessage('Nome de usuário deve ter pelo menos 3 caracteres.')
       return
     }
 
     if (!password) {
-      setErrorMessage('Password is required.')
+      setErrorMessage('Senha é obrigatória.')
       return
     }
 
     if (password.length < 6) {
-      setErrorMessage('Password must be at least 6 characters.')
+      setErrorMessage('Senha deve ter pelo menos 6 caracteres.')
       return
     }
 
     if (password !== confirmPassword) {
-      setErrorMessage('Passwords do not match.')
+      setErrorMessage('As senhas não coincidem.')
       return
     }
 
@@ -80,11 +80,11 @@ function RegisterPage() {
 
         <div className="space-y-2 text-center">
           <h1 className="font-display text-4xl">
-            RPG Companion
+            RPGesus
           </h1>
 
           <p className="text-muted-foreground">
-            Begin your adventure.
+            Comece sua aventura.
           </p>
         </div>
 
@@ -93,7 +93,7 @@ function RegisterPage() {
         <div className="rounded-2xl border border-border bg-card p-6 shadow-lg">
 
           <h2 className="mb-6 text-center font-display text-2xl">
-            Create Account
+            Criar Conta
           </h2>
 
           <form
@@ -108,7 +108,7 @@ function RegisterPage() {
                 htmlFor="username"
                 className="text-sm font-medium"
               >
-                Username
+                Nome de Usuário
               </label>
 
               <input
@@ -118,7 +118,7 @@ function RegisterPage() {
                   setUsername(event.target.value)
                   setErrorMessage('')
                 }}
-                placeholder="Choose a username"
+                placeholder="Escolha um nome de usuário"
                 autoComplete="username"
                 className="h-11 w-full rounded-xl border border-border bg-background px-4 text-sm text-foreground outline-none transition focus:ring-2 focus:ring-ring/70"
               />
@@ -131,7 +131,7 @@ function RegisterPage() {
                 htmlFor="password"
                 className="text-sm font-medium"
               >
-                Password
+                Senha
               </label>
 
               <input
@@ -142,7 +142,7 @@ function RegisterPage() {
                   setPassword(event.target.value)
                   setErrorMessage('')
                 }}
-                placeholder="At least 6 characters"
+                placeholder="Pelo menos 6 caracteres"
                 autoComplete="new-password"
                 className="h-11 w-full rounded-xl border border-border bg-background px-4 text-sm text-foreground outline-none transition focus:ring-2 focus:ring-ring/70"
               />
@@ -155,7 +155,7 @@ function RegisterPage() {
                 htmlFor="confirm-password"
                 className="text-sm font-medium"
               >
-                Confirm Password
+                Confirmar Senha
               </label>
 
               <input
@@ -166,7 +166,7 @@ function RegisterPage() {
                   setConfirmPassword(event.target.value)
                   setErrorMessage('')
                 }}
-                placeholder="Enter your password again"
+                placeholder="Digite sua senha novamente"
                 autoComplete="new-password"
                 className="h-11 w-full rounded-xl border border-border bg-background px-4 text-sm text-foreground outline-none transition focus:ring-2 focus:ring-ring/70"
               />
@@ -187,7 +187,7 @@ function RegisterPage() {
               className="w-full"
               disabled={isRegistering}
             >
-              {isRegistering ? 'Creating Account...' : 'Create Account'}
+              {isRegistering ? 'Criando Conta...' : 'Criar Conta'}
             </Button>
 
           </form>
@@ -197,13 +197,13 @@ function RegisterPage() {
         {/* Login */}
 
         <div className="text-center text-sm text-muted-foreground">
-          <span>Already have an account? </span>
+          <span>Já tem uma conta? </span>
 
           <Link
             to="/login"
             className="font-medium text-primary hover:underline"
           >
-            Log in
+            Entrar
           </Link>
         </div>
 

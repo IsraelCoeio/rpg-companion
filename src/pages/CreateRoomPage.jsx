@@ -30,7 +30,7 @@ function CreateRoomPage() {
     event.preventDefault()
 
     if (!user) {
-      setErrorMessage('You must be logged in.')
+      setErrorMessage('Você deve estar logado.')
       return
     }
 
@@ -41,7 +41,7 @@ function CreateRoomPage() {
       .replace(/[^A-Z0-9-]/g, '')
 
     if (!normalizedRoomCode) {
-      setErrorMessage('Room code is required.')
+      setErrorMessage('Nome da sala é obrigatório.')
       return
     }
 
@@ -62,7 +62,7 @@ function CreateRoomPage() {
 
       setRoom({
         roomCode: createdRoom.roomCode,
-        nickname: 'Game Master',
+        nickname: 'Narrador',
         isMaster: true,
       })
 
@@ -70,7 +70,7 @@ function CreateRoomPage() {
     } catch (error) {
       console.error(error)
       setErrorMessage(
-        'Failed to create room.',
+        'Falha ao criar a sala.',
       )
     } finally {
       setIsCreating(false)
@@ -81,9 +81,9 @@ function CreateRoomPage() {
   return (
     <PageContainer>
       <ScreenPlaceholder
-        eyebrow="Create Room"
-        title="Create a Room"
-        description="Choose a code for your adventure."
+        eyebrow="Criar Sala"
+        title="Criar uma Sala"
+        description="Escolha um nome para sua aventura."
       >
 
         <form
@@ -96,7 +96,7 @@ function CreateRoomPage() {
               htmlFor="room-code"
               className="text-sm font-medium"
             >
-              Room Code
+              Nome da Sala
             </label>
 
             <input
@@ -107,7 +107,7 @@ function CreateRoomPage() {
                   event.target.value.toUpperCase(),
                 )
               }
-              placeholder="HALLELUYA"
+              placeholder="Nome da Sala"
               className="h-11 w-full rounded-xl border border-border bg-background px-4 text-sm text-foreground outline-none transition focus:ring-2 focus:ring-ring/70"
             />
           </div>
@@ -118,8 +118,8 @@ function CreateRoomPage() {
             disabled={isCreating}
           >
             {isCreating
-              ? 'Creating...'
-              : 'Create Room'}
+              ? 'Criando...'
+              : 'Criar Sala'}
           </Button>
 
           {errorMessage && (

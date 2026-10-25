@@ -69,7 +69,7 @@ function PlayerCard({
               size="icon"
               className="h-7 w-7 shrink-0 rounded-full p-0 text-muted-foreground hover:bg-secondary hover:text-foreground"
               onClick={handleDiscard}
-              aria-label={`Discard changes for ${player.nickname}`}
+              aria-label={`Descartar alterações para ${player.nickname}`}
             >
               <X size={18} />
             </Button>
