@@ -5,7 +5,7 @@ function RoomInfo({ roomId, hasPlayers }) {
         Sala
       </p>
 
-      <h1 className="mt-2 font-display text-4xl font-semibold tracking-[0.2em]">
+      <h1 className="mt-2 wrap-anywhere font-display text-4xl font-semibold tracking-[0.2em]">
         {roomId}
       </h1>
 

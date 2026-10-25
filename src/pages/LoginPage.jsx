@@ -19,7 +19,7 @@ function LoginPage() {
     const normalizedUsername = username.trim()
 
     if (!normalizedUsername) {
-      setErrorMessage('Username is required.')
+      setErrorMessage('Nome de usuário é obrigatório.')
       return
     }
 
