@@ -10,7 +10,10 @@ import { createUserProfile } from '@/services/usersService'
 const INTERNAL_EMAIL_DOMAIN = '@rpgcompanion.local'
 
 function usernameToEmail(username) {
-  return `${username.trim().toLowerCase()}${INTERNAL_EMAIL_DOMAIN}`
+  return `${username
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '_')}${INTERNAL_EMAIL_DOMAIN}`
 }
 
 export async function registerUser({ username, password }) {
