@@ -165,26 +165,54 @@ service cloud.firestore {
        * master membership.
        */
       allow create: if signedIn() &&
-        request.resource.data.roomCode == roomCode &&
-        request.resource.data.masterId == request.auth.uid &&
-        request.resource.data.createdAt == request.time &&
-        existsAfter(
-          membershipPath(
-            request.auth.uid,
-            roomCode
-          )
-        ) &&
-        getAfter(
-          membershipPath(
-            request.auth.uid,
-            roomCode
-          )
-        ).data.role == 'master';
+      request.resource.data.keys().hasOnly([
+        'roomCode',
+        'name',
+        'subtitle',
+        'masterId',
+        'createdAt'
+      ]) &&
+      request.resource.data.roomCode == roomCode &&
+      request.resource.data.name is string &&
+      request.resource.data.name.size() > 0 &&
+      request.resource.data.name.size() <= 80 &&
+      request.resource.data.subtitle is string &&
+      request.resource.data.subtitle.size() <= 240 &&
+      request.resource.data.masterId == request.auth.uid &&
+      request.resource.data.createdAt == request.time &&
+      existsAfter(
+        membershipPath(
+          request.auth.uid,
+          roomCode
+        )
+      ) &&
+      getAfter(
+        membershipPath(
+          request.auth.uid,
+          roomCode
+        )
+      ).data.role == 'master';
 
+      
       /*
-       * There is currently no client-side room editing/deletion.
-       */
-      allow update, delete: if false;
+      * Only the room master can update room details.
+      * Room identity and ownership fields remain immutable.
+      */
+      allow update: if isMaster(roomCode) &&
+        request.resource.data.diff(
+          resource.data
+        ).affectedKeys().hasOnly([
+          'name',
+          'subtitle'
+        ]) &&
+        request.resource.data.name is string &&
+        request.resource.data.name.size() > 0 &&
+        request.resource.data.name.size() <= 80 &&
+        request.resource.data.subtitle is string &&
+        request.resource.data.subtitle.size() <= 240;
+
+      allow delete: if false;
+
 
 
       /*

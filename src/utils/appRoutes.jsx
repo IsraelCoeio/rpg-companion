@@ -23,6 +23,9 @@ import NotFoundPage from '@/pages/NotFoundPage'
 
 import RequireMembership from '@/components/routing/RequireMembership'
 
+import RequireNarrator from '@/components/routing/RequireNarrator'
+import RoomSettingsPage from '@/pages/RoomPage/MasterRoom/RoomSettingsPage'
+
 
 
 export const appRoutes = [
@@ -66,6 +69,14 @@ export const appRoutes = [
                   {
                     path: 'room/:roomId',
                     element: <RoomPage />,
+                  },
+                  {
+                    path: 'room/:roomId/settings',
+                    element: (
+                      <RequireNarrator>
+                        <RoomSettingsPage />
+                      </RequireNarrator>
+                    ),
                   },
 
                   {

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { getRoomDetails } from '@/services/roomsService'
 import { LogOut } from 'lucide-react'
 
 import { useUser } from '@/hooks/useUser'
@@ -47,6 +48,50 @@ function UserMenu() {
         ? 'Jogador'
         : null
 
+  const [roomDetails, setRoomDetails] = useState({
+    roomCode: null,
+    name: '',
+  })
+
+  const roomCode = membership?.roomCode
+
+useEffect(() => {
+  if (!roomCode) {
+    return
+  }
+
+  let isCurrent = true
+
+  getRoomDetails(roomCode)
+    .then(({ name }) => {
+      if (isCurrent) {
+        setRoomDetails({
+          roomCode,
+          name,
+        })
+      }
+    })
+    .catch((error) => {
+      console.error('Failed to load room name:', error)
+
+      if (isCurrent) {
+        setRoomDetails({
+          roomCode,
+          name: '',
+        })
+      }
+    })
+
+  return () => {
+    isCurrent = false
+  }
+}, [roomCode])
+
+const roomName =
+  roomDetails.roomCode === roomCode
+    ? roomDetails.name
+    : ''
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -91,6 +136,8 @@ function UserMenu() {
     }
   }
 
+
+
   return (
     <div
       ref={menuRef}
@@ -122,7 +169,7 @@ function UserMenu() {
 
               {membership ? (
                 <p className="truncate text-xs text-muted-foreground">
-                  {membershipLabel} · {membership.roomCode}
+                  {membershipLabel} · {roomName || membership.roomCode}
                 </p>
               ) : (
                 <p className="text-xs text-muted-foreground">

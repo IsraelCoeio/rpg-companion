@@ -88,7 +88,7 @@ function LoginPage() {
             <div className="space-y-2">
               <label
                 htmlFor="username"
-                className="text-sm font-medium"
+                className="pl-4 text-sm font-medium text-muted-foreground"
               >
                 Nome de Usuário
               </label>
@@ -111,7 +111,7 @@ function LoginPage() {
             <div className="space-y-2">
               <label
                 htmlFor="password"
-                className="text-sm font-medium"
+                className="pl-4 text-sm font-medium text-muted-foreground"
               >
                 Senha
               </label>

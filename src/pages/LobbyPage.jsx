@@ -137,9 +137,9 @@ function LobbyPage() {
             <div>
               <label
                 htmlFor="room-code"
-                className="mb-2 block text-sm font-medium"
+                className="pl-4 text-sm font-medium text-muted-foreground"
               >
-                Nome da Sala
+                Código da Sala
               </label>
 
               <input
@@ -152,7 +152,7 @@ function LobbyPage() {
 
                   setErrorMessage('')
                 }}
-                placeholder="Nome da Sala"
+                placeholder="Ex.: ABC123"
                 className="h-11 w-full rounded-xl border border-border bg-background px-4 text-sm text-foreground outline-none transition focus:ring-2 focus:ring-ring/70"
               />
             </div>
