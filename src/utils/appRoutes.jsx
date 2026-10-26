@@ -25,6 +25,7 @@ import RequireMembership from '@/components/routing/RequireMembership'
 
 import RequireNarrator from '@/components/routing/RequireNarrator'
 import RoomSettingsPage from '@/pages/RoomPage/MasterRoom/RoomSettingsPage'
+import GuestOnly from '@/components/routing/GuestOnly'
 
 
 
@@ -117,8 +118,8 @@ export const appRoutes = [
     ]
   },
 
-
-  {
+  { element: <GuestOnly />, 
+                  children: [{
     path: '/register',
     element: <RegisterPage />,
   },
@@ -128,6 +129,9 @@ export const appRoutes = [
     path: '/login',
     element: <LoginPage />,
   },
+                ]
+              },
+  
 
 
 
