@@ -78,6 +78,14 @@ export const appRoutes = [
                       </RequireNarrator>
                     ),
                   },
+                  {
+                    path: 'room/:roomId/players',
+                    element: (
+                      <RequireNarrator>
+                        <RoomPage />
+                      </RequireNarrator>
+                    ),
+                  },
 
                   {
                     path: 'abilities',

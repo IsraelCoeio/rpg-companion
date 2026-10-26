@@ -10,6 +10,9 @@ function ConnectedPlayers({
   editingPlayerIds,
   onStartEditing,
   onStopEditing,
+  isManagingPlayers,
+selectedPlayerIds,
+onTogglePlayerSelection,
 }) {
   return (
     <div className="mt-8">
@@ -26,22 +29,19 @@ function ConnectedPlayers({
       >
         {players.map((player) => (
           <PlayerCard
-            key={player.id}
-            player={player}
-            pendingChange={pendingChanges[player.id]}
-            onChangeHealth={onChangeHealth}
-            onApply={onApply}
-            onDiscard={onDiscard}
-            isEditingHealth={editingPlayerIds.has(
-              player.id,
-            )}
-            onStartEditing={() =>
-              onStartEditing(player.id)
-            }
-            onStopEditing={() =>
-              onStopEditing(player.id)
-            }
-          />
+  // Mantenha todas as propriedades que já existem.
+  player={player}
+  pendingChange={pendingChanges[player.id]}
+  onChangeHealth={onChangeHealth}
+  onApply={onApply}
+  onDiscard={onDiscard}
+  isEditingHealth={editingPlayerIds.has(player.id)}
+  onStartEditing={onStartEditing}
+  onStopEditing={onStopEditing}
+  isManagingPlayers={isManagingPlayers}
+  isSelected={selectedPlayerIds.has(player.id)}
+  onToggleSelection={() => onTogglePlayerSelection(player.id)}
+/>
         ))}
       </div>
     </div>

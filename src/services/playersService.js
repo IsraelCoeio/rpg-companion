@@ -250,3 +250,82 @@ export async function applyPlayerHealthChange(
     },
   )
 }
+
+/**
+ * Removes a player from a room.
+ *
+ * Deletes the room-specific player document and the user's
+ * membership atomically. The user's character is preserved.
+ */
+export async function removePlayer(
+  roomCode,
+  userId,
+) {
+  if (!roomCode || !userId) {
+    throw new Error(
+      'Room code and user ID are required.',
+    )
+  }
+
+  const playerRef = getPlayerRef(
+    roomCode,
+    userId,
+  )
+
+  const membershipRef = doc(
+    db,
+    'users',
+    userId,
+    'memberships',
+    roomCode,
+  )
+
+  const batch = writeBatch(db)
+
+  batch.delete(playerRef)
+  batch.delete(membershipRef)
+
+  await batch.commit()
+}
+
+export async function removePlayers(
+  roomCode,
+  userIds,
+) {
+  if (!roomCode) {
+    throw new Error('Room code is required.')
+  }
+
+  if (!Array.isArray(userIds) || userIds.length === 0) {
+    throw new Error('At least one player must be selected.')
+  }
+
+  const uniqueUserIds = [...new Set(userIds)]
+
+  // Each player requires two delete operations in the batch.
+  if (uniqueUserIds.length > 250) {
+    throw new Error('Too many players selected.')
+  }
+
+  const batch = writeBatch(db)
+
+  uniqueUserIds.forEach((userId) => {
+    if (!userId) {
+      throw new Error('Every player must have a valid user ID.')
+    }
+
+    batch.delete(getPlayerRef(roomCode, userId))
+
+    batch.delete(
+      doc(
+        db,
+        'users',
+        userId,
+        'memberships',
+        roomCode,
+      ),
+    )
+  })
+
+  await batch.commit()
+}
