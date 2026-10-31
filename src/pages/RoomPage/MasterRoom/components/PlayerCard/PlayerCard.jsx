@@ -160,7 +160,7 @@ function PlayerCard({
         isEditing={isEditingHealth}
         playerId={player.id}
         onChangeHealth={onChangeHealth}
-        onToggle={onStartEditing}
+        onToggle={() => onStartEditing(player.id)}
       />
 
       {/* Commit */}
