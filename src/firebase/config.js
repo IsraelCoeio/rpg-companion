@@ -25,8 +25,8 @@ if (import.meta.env.DEV) {
     8080,
   )
 
-  //connectAuthEmulator(
-  //  auth,
-  //  'http://127.0.0.1:9099',
-  //)
+  connectAuthEmulator(
+    auth,
+    'http://127.0.0.1:9099',
+  )
 }

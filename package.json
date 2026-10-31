@@ -9,7 +9,9 @@
     "db:restore": "node --env-file=.env.admin scripts/restore.js",
     "db:emulator": "firebase emulators:start --only firestore",
     "db:migrate": "node --env-file=.env.admin scripts/migrateMemberships.js",
-    "dev": "vite",
+    "dev:vite": "vite",
+    "dev": "concurrently -k -n FRONTEND,EMULATORS \"npm:dev:vite\" \"npm:back:emulator\"",
+    "back:emulator": "firebase emulators:start --only firestore,auth",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
